@@ -8,6 +8,10 @@ function sum( x ){
 	return x.reduce( ( sum, n ) => sum + n );
 }
 
+function prod( x ){
+	return x.reduce( ( prod, n ) => prod * n );
+}
+
 /*
 	Load and run solution
 	document.head.appendChild( document.createElement( "script" ) ).src = " https://fockjef.net/advent-of-code/AoC.js"
