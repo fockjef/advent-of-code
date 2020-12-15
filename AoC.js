@@ -1,7 +1,8 @@
 /* Helper functions */
 
 function parseInput( mapFunc, delim = /\n/ ){
-	return document.body.innerText.split( delim ).filter( Boolean ).map( typeof mapFunc === "function" ? mapFunc : x => x );
+	let data = document.body.innerText.trim().split( delim );
+	return typeof mapFunc === "function" ? data.map( mapFunc ) : data;
 }
 
 function sum( x ){
