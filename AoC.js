@@ -9,13 +9,10 @@ function parseInput( mapFunc, delim = /\n/ ){
 	return mapFunc ? data.map( mapFunc ) : data;
 }
 
-function sum( x ){
-	return x.reduce( ( sum, n ) => sum + n );
-}
-
-function prod( x ){
-	return x.reduce( ( prod, n ) => prod * n );
-}
+const sum = x => x.reduce( ( sum, n ) => sum + n );
+const prod = x => x.reduce( ( prod, n ) => prod * n );
+const gcd = ( a, b ) => b === 0 ? a : gcd( b, a % b );
+const lcm = ( a, b ) => a * b / gcd( a, b );
 
 /*
 	Load and run solution

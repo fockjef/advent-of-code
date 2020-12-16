@@ -4,21 +4,18 @@ function day_13a(){
 	return prod( data[1].split( "," ).map( Number ).filter( Boolean ).map( id => [ id, id - t0 % id ] ).sort( ( a, b ) => a[1] - b[1] )[0] );
 }
 
-function findOffset( factor, offset, mod ){
-	factor %= mod;
-	offset %= mod;
-	for( let i = 0; i < mod; i++ ){
-		if( ( factor * i + offset ) % mod === 0 ) return i;
+function findCongruence( n1, n2 ){
+	for( let i = 0; i < n2[0]; i++ ){
+		if( ( n1[0] * i + n1[1] ) % n2[0] === n2[1] ) return [ lcm( n1[0], n2[0] ), n1[0] * i + n1[1] ];
 	}
+	return [ 0, -1 ];
 }
 
 function day_13b(){
-	let data = parseInput()[1].split( "," ).map( ( x, i ) => x === "x" ? undefined : [ +x, i ] ).filter( Boolean ),
-	    factor = 1,
-	    offset = 0;
-	for( let i = 0; i < data.length; i++ ){
-		offset += factor * findOffset( factor, offset + data[i][1], data[i][0] );
-		factor *= data[i][0];
-	}
-	return offset;
+	return parseInput()[1]
+		.split( "," )
+		.map( ( x, i ) => [ +x, ( +x + ( x - i ) % x ) % x ] )
+		.filter( x => x[0] )
+		.sort( ( a, b ) => b[0] - a[0] )
+		.reduce( ( t0, t ) => findCongruence( t0, t ) )[1];
 }
