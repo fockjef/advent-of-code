@@ -1,4 +1,5 @@
 /* --- Day 7: Handy Haversacks --- */
+
 function day_07a(){
 	let data = parseInput( x => x.split(" bags contain") ),
 	    stack = [ "shiny gold" ],

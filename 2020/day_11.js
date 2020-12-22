@@ -1,30 +1,4 @@
-function initialize( data, getNeighbors ){
-	let grid = new Array( data.length * data[0].length );
-	for( let r = 0; r < data.length; r++ ){
-		for( let c = 0; c < data[r].length; c++ ){
-			if( data[r][c] !== "." ){
-				grid[r*data[0].length+c] = {
-					state: [ +( data[r][c] === "#" ), 0 ],
-					neigh: getNeighbors( data, r, c ),
-				};
-			}
-		}
-	}
-	return grid;
-}
-
-function evolve( grid, gen, transitionRule ){
-	let curr = gen % 2,
-	    next = ( gen + 1 ) % 2,
-	    numChanged = 0;
-	grid.forEach( ( s, i ) => {
-		let occupied = sum( s.neigh.map( n => grid[n].state[curr] ) ),
-		    changeState = transitionRule( s.state[curr], occupied );
-		s.state[next] = s.state[curr] ^ changeState;
-		if( changeState ) numChanged++;
-	} );
-	return numChanged;
-}
+/* --- Day 11: Seating System --- */
 
 function day_11a(){
 	function getNeighbors( data, r, c ){
@@ -75,4 +49,32 @@ function day_11b(){
 	    gen = 0;
 	while( evolve( grid, gen++, transitionRule ) ){}
 	return grid.filter( s => s.state[0] === 1 ).length;
+}
+
+function initialize( data, getNeighbors ){
+	let grid = new Array( data.length * data[0].length );
+	for( let r = 0; r < data.length; r++ ){
+		for( let c = 0; c < data[r].length; c++ ){
+			if( data[r][c] !== "." ){
+				grid[r*data[0].length+c] = {
+					state: [ +( data[r][c] === "#" ), 0 ],
+					neigh: getNeighbors( data, r, c ),
+				};
+			}
+		}
+	}
+	return grid;
+}
+
+function evolve( grid, gen, transitionRule ){
+	let curr = gen % 2,
+	    next = ( gen + 1 ) % 2,
+	    numChanged = 0;
+	grid.forEach( ( s, i ) => {
+		let occupied = sum( s.neigh.map( n => grid[n].state[curr] ) ),
+		    changeState = transitionRule( s.state[curr], occupied );
+		s.state[next] = s.state[curr] ^ changeState;
+		if( changeState ) numChanged++;
+	} );
+	return numChanged;
 }

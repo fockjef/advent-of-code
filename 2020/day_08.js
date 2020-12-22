@@ -1,19 +1,5 @@
 /* --- Day 8: Handheld Halting --- */
 
-function processor( code ){
-	let acc = 0,
-	    i;
-	for( i = 0; i < code.length && code[i]; i++ ){
-		let [ op, arg ] = code[i];
-		code[i] = undefined;
-		switch( op ){
-			case "acc": acc += +arg; break;
-			case "jmp": i += +arg - 1; break;
-		}
-	}
-	return { acc, i };
-}
-
 function day_08a(){
 	return processor( parseInput( x => x.split(" ") ) ).acc;
 }
@@ -28,4 +14,18 @@ function day_08b(){
 			if( temp.i === code.length ) return temp.acc;
 		}
 	}
+}
+
+function processor( code ){
+	let acc = 0,
+	    i;
+	for( i = 0; i < code.length && code[i]; i++ ){
+		let [ op, arg ] = code[i];
+		code[i] = undefined;
+		switch( op ){
+			case "acc": acc += +arg; break;
+			case "jmp": i += +arg - 1; break;
+		}
+	}
+	return { acc, i };
 }
