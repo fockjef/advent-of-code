@@ -47,7 +47,7 @@ function getNeigh( numDim ){
 
 function pos2Id( pos ){
 	let numDim = pos.length,
-	    maxPos = 2 << ( 50 / numDim >>> 0 ) - 1,
+	    maxPos = 1 << ( 50 / numDim >>> 0 ),
 	    offset = maxPos / 2;
 	if( pos.length > 8 || pos.some( p => p < -offset || p >= offset ) ) throw new Error( "Invalid position" );
 	return ( numDim - 1 ) * 0x4000000000000 + sum( pos.map( ( p, i ) => ( p + offset ) * Math.pow( maxPos, i ) ) );
