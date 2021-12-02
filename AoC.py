@@ -9,5 +9,7 @@ os.chdir(year)
 solution = importlib.import_module( ".day_%02d" % day, package = year)
 
 print( "AoC %s day %02d" % ( year, day))
-print( "silver: ", solution.silver())
-print( "gold:   ", solution.gold())
+if hasattr( solution, "silver"):
+    print( "silver: ", solution.silver())
+if hasattr( solution, "gold"):
+    print( "gold:   ", solution.gold())
