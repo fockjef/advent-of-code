@@ -1,11 +1,5 @@
-/* --- Day 1: Report Repair --- */
+/* --- Day 1: Sonar Sweep --- */
 
-function day_01a(){
-	let data = parseInput( Number );
-	return data.filter( ( x, i) => i >= 1 && x > data[i-1]).length;
-}
-
-function day_01b(){
-	let data = parseInput( Number );
-	return data.filter( ( x, i) => i >= 3 && x > data[i-3]).length;
-}
+const compareWindows = (n) => parseInput(Number).filter( ( x, i, data) => i >= n && x > data[i-n]).length;
+const day_01a = () => compareWindows(1)
+const day_01b = () => compareWindows(3)

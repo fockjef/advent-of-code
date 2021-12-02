@@ -6,7 +6,7 @@ data = [ float(x) for x in input.readlines() ]
 input.close()
 
 # helper functions
-def compareWindows( size):
+def compareWindows(size):
 	count = 0
 	for i in range( size, len(data)):
 		if data[i] > data[i-size]:
