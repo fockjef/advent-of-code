@@ -1,14 +1,14 @@
 /* --- Day 4: Passport Processing --- */
 
 function day_04a(){
-	let data = parseInput( null, /\n\n/ ),
+	let data = parseInput( /\n\n/ ),
 	    required = [ "byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"],
 	    regex = new RegExp( "\\b(?:" + required.join( "|" ) + ")", "g" );
 	return data.map( pp => new Set( pp.match( regex ) ) ).filter( pp => required.every( field => pp.has( field ) ) ).length;
 }
 
 function day_04b(){
-	let data = parseInput( null, /\n\n/ ),
+	let data = parseInput( /\n\n/ ),
 	    required = {
 	    	byr: year => +year >= 1920 && +year <= 2002,
 	    	iyr: year => +year >= 2010 && +year <= 2020,
