@@ -17,5 +17,5 @@ function day_03a(){
 
 function day_03b(){
 	let data = parseInput( x => x.split("").map(Number));
-	return filterValue( data, 1) * filterValue( data, 0);
+	return filterValues( data, 1) * filterValues( data, 0);
 }
