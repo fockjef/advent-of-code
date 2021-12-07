@@ -4,6 +4,8 @@ const sum = x => x.reduce( ( sum, n ) => sum + n );
 const prod = x => x.reduce( ( prod, n ) => prod * n );
 const gcd = ( a, b ) => b === 0 ? a : gcd( b, a % b );
 const lcm = ( a, b ) => a * b / gcd( a, b );
+const numericSortAsc = ( a, b) => a - b;
+const numericSortDesc = ( a, b) => a - b;
 
 const env = typeof window == "undefined" ? "node" : "browser";
 let year, day;
