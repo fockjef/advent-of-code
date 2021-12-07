@@ -1,8 +1,6 @@
 /* --- Day 6: Lanternfish --- */
 
-function numFish( t0, numDays){
-    fish = new Array(9).fill(0);
-    fish[t0] = 1;
+function numFish( fish, numDays){
     for( let d = 0; d < numDays; d++ ){
         fish[(d + 7) % fish.length] += fish[d % fish.length];
     }
@@ -11,8 +9,9 @@ function numFish( t0, numDays){
 
 function day_06a( numDays = 80){
     let data = parseInput( Number, /,/),
-        fish = Array.from( new Array(7), ( _, i) => numFish( i, numDays));
-    return sum( data.map( x => fish[x]));
+        fish = new Array(9).fill(0);
+    data.forEach( x => fish[x]++);
+    return numFish( fish, numDays);
 }
 
 function day_06b(){
