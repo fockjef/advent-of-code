@@ -2,10 +2,13 @@
 
 const sum = x => x.reduce( ( sum, n ) => sum + n );
 const prod = x => x.reduce( ( prod, n ) => prod * n );
-const gcd = ( a, b ) => b === 0 ? a : gcd( b, a % b );
-const lcm = ( a, b ) => a * b / gcd( a, b );
-const numericSortAsc = ( a, b) => a - b;
-const numericSortDesc = ( a, b) => a - b;
+const mean = x => sum(x) / x.length;
+const median = x => mean(x.slice().sort(numericSortAsc).slice( x.length - 1 >>> 1, (x.length >>> 1) + 1));
+const gcd = ( a, b) => b === 0 ? a : gcd( b, a % b );
+const lcm = ( a, b) => a * b / gcd( a, b );
+const cmp = ( a, b) => a < b ? -1 : a == b ? 0 : 1;
+const numericSortAsc = ( a, b) => cmp( a, b);
+const numericSortDesc = ( a, b) => cmp( b, a);
 
 const env = typeof window == "undefined" ? "node" : "browser";
 let year, day;
