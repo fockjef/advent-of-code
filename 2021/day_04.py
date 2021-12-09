@@ -67,6 +67,3 @@ def gold():
 			return n * cardValue(winningCards[-1])
 		for card in winningCards:
 			bingoCards.remove(card)
-
-
-print([ parseBingoCard(x) for x in data[1:]][-1])
