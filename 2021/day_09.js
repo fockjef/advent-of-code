@@ -38,16 +38,16 @@ function getBasinSize( row, col, heightmap){
 
 function day_09a(){
     let heightmap = parseInput( x => x.split("").map(Number)),
-        lowPoints = [];
+        lowPoints = 0;
     for( let row = 0; row < heightmap.length; row++ ){
         for( let col = 0; col < heightmap[0].length; col++ ){
             let val = heightmap[row][col];
             if( getNeighbors( row, col, heightmap).every( n => n.val > val) ){
-                lowPoints.push(val + 1);
+                lowPoints += val + 1;
             }
         }
     }
-    return sum(lowPoints);
+    return lowPoints;
 }
 
 function day_09b(){
