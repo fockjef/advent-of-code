@@ -43,4 +43,3 @@ def gold():
     oxygen_generator_rating = filter_values( data, 1)
     co2_scrubber_rating = filter_values( data, 0)
     return oxygen_generator_rating * co2_scrubber_rating
-
