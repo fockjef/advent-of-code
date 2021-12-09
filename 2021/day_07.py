@@ -14,7 +14,7 @@ def silver():
     data.sort()
     median = data[(len(data) - 1) // 2]
     fuelCost = lambda pos: abs(pos - median) 
-    return sum(map( fuelCost, data));
+    return sum(map( fuelCost, data))
 
 def gold():
     mean = sum(data) / len(data)
@@ -24,9 +24,9 @@ def gold():
         if mean < median:
             mean = math.ceil(mean)
         else:
-            if len(data) % 2 == 0 and mean < data[len(data) / 2]:
+            if len(data) % 2 == 0 and mean < data[len(data) // 2]:
                 mean = round(mean)
             else:
                 mean = math.floor(mean)
-    fuelCost = lambda pos: abs(pos - mean) * (abs(pos - mean) + 1) / 2
-    return sum(map( fuelCost, data));
+    fuelCost = lambda pos: abs(pos - mean) * (abs(pos - mean) + 1) // 2
+    return sum(map( fuelCost, data))
