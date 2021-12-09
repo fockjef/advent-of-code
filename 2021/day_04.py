@@ -7,7 +7,7 @@ input.close()
 
 # helper functions
 def parseBingoCard(card):
-	rows = card.split("\n")
+	rows = card.strip().split("\n")
 	for i, r in enumerate(rows):
 		rows[i] = [ int(c) for c in r.split()]
 	return rows
@@ -67,3 +67,6 @@ def gold():
 			return n * cardValue(winningCards[-1])
 		for card in winningCards:
 			bingoCards.remove(card)
+
+
+print([ parseBingoCard(x) for x in data[1:]][-1])

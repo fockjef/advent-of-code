@@ -2,7 +2,7 @@
 
 # read input as list of numbers
 input = open( "day_01.input")
-data = [ intcd adve	(x) for x in input.readlines() ]
+data = [ int(x) for x in input.readlines() ]
 input.close()
 
 # helper functions
