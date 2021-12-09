@@ -8,49 +8,27 @@ data = [ re.findall( r"[a-g]+", x) for x in input.readlines() ]
 input.close()
 
 # helper functions
+def extractPattern( filterFunc, patterns):
+    d = list(filter( filterFunc, patterns))[0]
+    patterns.remove(d)
+    return set(d)
+
 def decode(signalPatterns):
     patterns = signalPatterns[0:10]
-    outputs = signalPatterns[-4:]
     digits = [None] * 10
-    # 1
-    d = list(filter( lambda p: len(p) == 2, patterns))[0]
-    patterns.remove(d)
-    digits[1] = set(d)
-    # 7
-    d = list(filter( lambda p: len(p) == 3, patterns))[0]
-    patterns.remove(d)
-    digits[7] = set(d)
-    # 4
-    d = list(filter( lambda p: len(p) == 4, patterns))[0]
-    patterns.remove(d)
-    digits[4] = set(d)
-    # 8
-    d = list(filter( lambda p: len(p) == 7, patterns))[0]
-    patterns.remove(d)
-    digits[8] = set(d)
-    # 9
-    d = list(filter( lambda p: len(digits[4].intersection(p)) == 4, patterns))[0]
-    patterns.remove(d)
-    digits[9] = set(d)
-    # 0
-    d = list(filter( lambda p: len(p) == 6 and len(digits[7].intersection(p)) == 3, patterns))[0]
-    patterns.remove(d)
-    digits[0] = set(d)
-    # 6
-    d = list(filter( lambda p: len(p) == 6, patterns))[0]
-    patterns.remove(d)
-    digits[6] = set(d)
-    # 3
-    d = list(filter( lambda p: len(digits[7].intersection(p)) == 3, patterns))[0]
-    patterns.remove(d)
-    digits[3] = set(d)
-    # 5
-    d = list(filter( lambda p: len(digits[9].intersection(p)) == 5, patterns))[0]
-    patterns.remove(d)
-    digits[5] = set(d)
-    # 2
+    digits[1] = extractPattern( lambda p: len(p) == 2, patterns)
+    digits[7] = extractPattern( lambda p: len(p) == 3, patterns)
+    digits[4] = extractPattern( lambda p: len(p) == 4, patterns)
+    digits[8] = extractPattern( lambda p: len(p) == 7, patterns)
+    digits[9] = extractPattern( lambda p: len(digits[4].intersection(p)) == 4, patterns)
+    digits[0] = extractPattern( lambda p: len(p) == 6 and len(digits[7].intersection(p)) == 3, patterns)
+    digits[6] = extractPattern( lambda p: len(p) == 6, patterns)
+    digits[3] = extractPattern( lambda p: len(digits[7].intersection(p)) == 3, patterns)
+    digits[5] = extractPattern( lambda p: len(digits[9].intersection(p)) == 5, patterns)
     digits[2] = set(patterns[0])
-    return int("".join([str(digits.index(set(p))) for p in outputs]))
+    outputs = signalPatterns[-4:]
+    outputs = [ digits.index(p) for p in map( set, outputs)]  
+    return int( "".join( map( str, outputs)), 10)
 
 # solutions
 def silver():
