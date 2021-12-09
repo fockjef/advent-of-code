@@ -8,7 +8,6 @@ const neighborhood = [
 ];
 
 function getNeighbors( row, col, grid){
-    window.FOO = [ row, col, grid];
     return neighborhood
         .map( ([ r, c]) => [ r + row, c + col])
         .filter( ([ r, c]) => r >= 0 && c >= 0 && r < grid.length && c < grid[0].length)
@@ -37,7 +36,7 @@ function getBasinSize( row, col, heightmap){
 }
 
 function day_09a(){
-    let heightmap = parseInput( x => x.split("").map(Number)),
+    let heightmap = parseInput( x => x.trim().split("").map(Number)),
         lowPoints = 0;
     for( let row = 0; row < heightmap.length; row++ ){
         for( let col = 0; col < heightmap[0].length; col++ ){
@@ -51,7 +50,7 @@ function day_09a(){
 }
 
 function day_09b(){
-    let heightmap = parseInput( x => x.split("").map(Number)),
+    let heightmap = parseInput( x => x.trim().split("").map(Number)),
         basins = [];
     for( let row = 0; row < heightmap.length; row++ ){
         for( let col = 0; col < heightmap.length; col++ ){

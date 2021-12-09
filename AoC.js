@@ -17,7 +17,6 @@ if( env == "browser" ){
 }
 else{
 	[ year, day] = process.argv.slice(2).map(Number);
-	
 }
 if( +day < 10 ) day = "0" + day;
 
