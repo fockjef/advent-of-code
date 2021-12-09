@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 
-# read input as list of numbers
+# read input delimited by \n\n
 input = open( "day_04.input")
 data = input.read().split("\n\n")
 input.close()
 
 # helper functions
-
 def parseBingoCard(card):
 	rows = card.split("\n")
 	for i, r in enumerate(rows):
