@@ -27,7 +27,7 @@ def decode(signalPatterns):
     digits[5] = extractPattern( lambda p: len(digits[9].intersection(p)) == 5, patterns)
     digits[2] = set(patterns[0])
     outputs = signalPatterns[-4:]
-    outputs = [ digits.index(p) for p in map( set, outputs)]  
+    outputs = [ digits.index(p) for p in map( set, outputs)]
     return int( "".join( map( str, outputs)), 10)
 
 # solutions
