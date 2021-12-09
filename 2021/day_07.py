@@ -7,8 +7,6 @@ input = open( "day_07.input")
 data = [ int(x) for x in input.readline().split(",")]
 input.close()
 
-# helper functions
-
 # solutions
 def silver():
     data.sort()

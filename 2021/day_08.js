@@ -40,3 +40,4 @@ function day_08b(){
     let data = parseInput( x => x.match(/[a-g]+/g));
     return sum( data.map( d => decode( d.slice(0, 10), d.slice(-4))));
 }
+digits
