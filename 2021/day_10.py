@@ -13,7 +13,7 @@ def checkSyntax(chunks):
     tagPairs = re.compile("\(\)|\[]|\{}|<>")
     tagClose = re.compile("([)}\]>])")
     while True:
-        chunks, subs = tagPairs.sub( "", chunks)
+        chunks, subs = tagPairs.subn( "", chunks)
         if subs == 0:
             break;
     if len(chunks) == 0:
@@ -27,7 +27,7 @@ def checkSyntax(chunks):
             }
         }
     else:
-        incomplete, corruptTag = tagPairs.split( r"([)}\]>].*)", chunks)[0:2]
+        incomplete, corruptTag = tagClose.split(chunks)[0:2]
         return {
             "isValid": False,
             "error": {
@@ -37,10 +37,10 @@ def checkSyntax(chunks):
         }
 
 def isCorrupt(status):
-    return status.isValid == False and status.error.corrupt != False
+    return status["isValid"] == False and status["error"]["corrupt"] != False
 
 def isIncomplete(status):
-    return status.isValid == False and status.error.corrupt == False
+    return status["isValid"] == False and status["error"]["corrupt"] == False
 
 def scoreCorrupt(status):
     score = {
@@ -49,7 +49,7 @@ def scoreCorrupt(status):
         "}": 1197,
         ">": 25137
     }
-    return score[status.error.corrupt]
+    return score[status["error"]["corrupt"]]
 
 def scoreIncomplete(status):
     score = {
@@ -58,7 +58,7 @@ def scoreIncomplete(status):
         "{": "3",
         "<": "4"
     }
-    return int( "".join( map( lambda t: score[t], reversed(status.error.incomplete))), 5)
+    return int( "".join( map( lambda t: score[t], reversed(status["error"]["incomplete"]))), 5)
 
 # solutions
 def silver():
