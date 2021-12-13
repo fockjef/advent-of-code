@@ -1,0 +1,41 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #0e1823;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+img {
+    display: block;
+    opacity: 70%;
+    width: 7vmax;
+}
+
+div.octopus {
+    position: relative;
+}
+
+div.octopus::after {
+    background: radial-gradient( #ff7fff 20%, transparent 100%);
+    content: "";
+    height: 0%;
+    position: absolute;
+    width: 0%;
+    z-index: -1;
+}
+
+div.octopus.flash::after {
+    animation: glow .2s 1 ease-out;
+}
+
+@keyframes glow{
+        0% {width:   5%; height:  10%; top:  33%; left: 50%; }
+        33% {width: 100%; height: 100%; top:   0%; left:  0%; }
+    100% {width:   5%; height:  10%; top:  33%; left: 50%; }
+}

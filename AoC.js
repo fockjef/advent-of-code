@@ -26,7 +26,7 @@ function parseInput( mapFunc, delim = /\n/ ){
 		mapFunc = undefined;
 	}
 	let data = env == "browser" ? document.body.innerText : readFile(`${year}/day_${day}.input`);
-	data = data.trim().split( delim );
+	data = data.trimEnd().split( delim );
 	return mapFunc ? data.map( mapFunc ) : data;
 }
 
