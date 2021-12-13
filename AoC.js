@@ -1,6 +1,5 @@
 /* Helper functions */
-
-const sum = x => x.reduce( ( sum, n ) => sum + n );
+const sum = x => x.reduce( ( sum, n ) => sum + n, 0);
 const prod = x => x.reduce( ( prod, n ) => prod * n );
 const mean = x => sum(x) / x.length;
 const median = x => mean(x.slice().sort(numericSortAsc).slice( x.length - 1 >>> 1, (x.length >>> 1) + 1));
@@ -9,6 +8,10 @@ const lcm = ( a, b) => a * b / gcd( a, b );
 const cmp = ( a, b) => a < b ? -1 : a == b ? 0 : 1;
 const numericSortAsc = ( a, b) => cmp( a, b);
 const numericSortDesc = ( a, b) => cmp( b, a);
+const reUpperCase = /^[A-Z]+$/;
+const reLowerCase = /^[a-z]+$/;
+const isUpperCase = s => reUpperCase.test(s);
+const isLowerCase = s => reLowerCase.test(s);
 
 const env = typeof window == "undefined" ? "node" : "browser";
 let year, day;
