@@ -1,3 +1,5 @@
+/* --- Day 12: Passage Pathing --- */
+
 function isValidPath1(path){
     return isUpperCase(path[0]) || !path.includes( path[0], 1);
 }

@@ -14,14 +14,10 @@ const isUpperCase = s => reUpperCase.test(s);
 const isLowerCase = s => reLowerCase.test(s);
 
 const env = typeof window == "undefined" ? "node" : "browser";
-let year, day;
-if( env == "browser" ){
-	[ year, day] = (location.href.match( /^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/ ) || []).slice(1);
-}
-else{
-	[ year, day] = process.argv.slice(2).map(Number);
-}
-if( +day < 10 ) day = "0" + day;
+let [ year, day] = env == "browser"
+	? (location.href.match( /^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/ ) || []).slice(1)
+	: process.argv.slice(2).map(Number);
+if( +day < 10 ) day = "0" + (+day);
 
 function parseInput( mapFunc, delim = /\n/ ){
 	if( mapFunc !== undefined && typeof mapFunc !== "function" ){
