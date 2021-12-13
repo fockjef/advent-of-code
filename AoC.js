@@ -13,7 +13,7 @@ const numericSortDesc = ( a, b) => cmp( b, a);
 const env = typeof window == "undefined" ? "node" : "browser";
 let year, day;
 if( env == "browser" ){
-	[ , year, day] = location.href.match( /^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/ ) || [];
+	[ year, day] = (location.href.match( /^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/ ) || []).slice(1);
 }
 else{
 	[ year, day] = process.argv.slice(2).map(Number);
