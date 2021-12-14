@@ -5,11 +5,30 @@ import importlib, os, sys;
 year = sys.argv[1]
 day = int(sys.argv[2])
 
-os.chdir(year)
-solution = importlib.import_module( ".day_%02d" % day, package = year)
+os.chdir( "%s/%02d" % ( year, day))
+solution = importlib.import_module( ".solution", package = "%s.%02d" % ( year, day))
+expected = {}
+if os.path.exists("expected.txt"):
+    file = open("expected.txt")
+    expected = dict( zip( [ "silver", "gold"], [ x.strip() for x in file.readlines()]))
 
-print( "AoC %s day %02d" % ( year, day))
+def green(text):
+    return "\x1b[38;5;2m%s\x1b[0m" % text
+
+def red(text):
+    return "\x1b[38;5;1m%s\x1b[0m" % text
+
+print( "AoC %s day %d" % ( year, day))
 if hasattr( solution, "silver"):
-    print( "silver: ", solution.silver())
+    result = str(solution.silver())
+    status = " "
+    if "silver" in expected:
+        status = green("✓") if result == expected["silver"] else red("✗")
+    print( "silver: %s %s" % ( status, result))
 if hasattr( solution, "gold"):
-    print( "gold:   ", solution.gold())
+    result = str(solution.gold())
+    status = " "
+    if "gold" in expected:
+        status = green("✓") if result == expected["gold"] else red("✗")
+    print( "gold  : %s %s" % ( status, result))
+

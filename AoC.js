@@ -24,18 +24,25 @@ function parseInput( mapFunc, delim = /\n/ ){
 		delim = mapFunc;
 		mapFunc = undefined;
 	}
-	let data = env == "browser" ? document.body.innerText : readFile(`${year}/day_${day}.input`);
+	let data = env == "browser" ? document.body.innerText : readFile(`${year}/${day}/input.txt`);
 	data = data.trimEnd().split( delim );
 	return mapFunc ? data.map( mapFunc ) : data;
 }
 
 function readFile(file){
-	return require("fs").readFileSync(file).toString();
+	return fs.readFileSync(file).toString();
 }
 
-function runSolutions(){
-	if( typeof globalThis[`day_${day}a`] == "function" ) console.log( `day ${day} (a): ` + globalThis[`day_${day}a`]() );
-	if( typeof globalThis[`day_${day}b`] == "function" ) console.log( `day ${day} (b): ` + globalThis[`day_${day}b`]() );
+function runSolutions( expected = ""){
+	expected = expected.split(/\n/).map( x => x.trim());
+	console.log(`AoC ${year} day ${day}`);
+	[ "silver", "gold"].forEach( ( s, i) => {
+		let answer = globalThis[s]().toString().trim(),
+			status = expected[i] == undefined
+				? " "
+				: `${answer == expected[i] ? "\x1b[38;5;2m✓\x1b[0m" : "\x1b[38;5;1m✗\x1b[0m"}`;
+		console.log( `${(s+"  ").slice(0,6)}: ${status} ${answer}`);
+	});
 }
 
 /*
@@ -49,14 +56,22 @@ function runSolutions(){
 	if( year && day ){
 		if( env == "browser" ){
 			let script = document.head.appendChild( document.createElement( "script" ) );
-			script.onload = runSolutions;
-			script.src = `https://fockjef.net/advent-of-code/${year}/day_${day}.js`;
+			script.onload = () => {
+				let script = document.head.appendChild( document.createElement( "script" ) );
+				script.onerror = runSolutions;
+				script.src = `https://fockjef.net/softcors/?ctype=jsonp&callback=runSolutions&url=https%3A%2F%2Ffockjef.net%2Fadvent-of-code%2F${year}%2F${day}%2Fexpected.txt`;
+			};
+			script.src = `https://fockjef.net/advent-of-code/${year}/${day}/solution.js`;
 		}
 		else{
-			eval( readFile(`${year}/day_${day}.js`) );
-			try{ globalThis[`day_${day}a`] = eval(`day_${day}a`) }catch(e){}
-			try{ globalThis[`day_${day}b`] = eval(`day_${day}b`) }catch(e){}
-			runSolutions();
+			globalThis.fs = require("fs");
+			eval( readFile(`${year}/${day}/solution.js`) );
+			try{ globalThis.silver = eval("silver") }catch(e){}
+			try{ globalThis.gold   = eval("gold")   }catch(e){}
+			let expected = fs.existsSync(`${year}/${day}/expected.txt`)
+				? readFile(`${year}/${day}/expected.txt`)
+				: "";
+			runSolutions(expected);
 		}
 	}
 })();
