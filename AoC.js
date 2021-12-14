@@ -25,7 +25,7 @@ function parseInput( mapFunc, delim = /\n/ ){
 		mapFunc = undefined;
 	}
 	let data = env == "browser" ? document.body.innerText : readFile(`${year}/${day}/input.txt`);
-	data = data.trimEnd().split( delim );
+	data = data.trimRight().split( delim );
 	return mapFunc ? data.map( mapFunc ) : data;
 }
 
@@ -34,11 +34,11 @@ function readFile(file){
 }
 
 function green(s){
-	return env == "node" ? `\x1b[38;5;2m${s}\x1b[0m` : "%c" + s;
+	return env == "node" ? `\x1b[38;5;2m${s}\x1b[0m` : `%c${s}%c`;
 }
 
 function red(s){
-	return env == "node" ? `\x1b[38;5;1m${s}\x1b[0m` : "%c" + s;
+	return env == "node" ? `\x1b[38;5;1m${s}\x1b[0m` : `%c${s}%c`;
 }
 
 function runSolutions( expected = ""){
@@ -49,10 +49,10 @@ function runSolutions( expected = ""){
 			status = expected[i] == undefined
 				? " "
 				: `${answer == expected[i] ? green("✓") : red("✗")}`,
-			color = expected[i] == undefined
+			color = env == "node" || expected[i] == undefined
 				? ""
 				: `color:${answer == expected[i]? "green" : "red"}`;
-		console.log( `${(s+"  ").slice(0,6)}: ${status} ${answer}`);
+		console.log( `${(s+"  ").slice(0,6)}: ${status} ${answer}`, color, "");
 	});
 }
 
@@ -75,6 +75,7 @@ function runSolutions( expected = ""){
 			script.src = `https://fockjef.net/advent-of-code/${year}/${day}/solution.js`;
 		}
 		else{
+			if( typeof globalThis == "undefined" ) global.globalThis = global;
 			globalThis.fs = require("fs");
 			eval( readFile(`${year}/${day}/solution.js`) );
 			try{ globalThis.silver = eval("silver") }catch(e){}
