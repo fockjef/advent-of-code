@@ -33,6 +33,14 @@ function readFile(file){
 	return fs.readFileSync(file).toString();
 }
 
+function green(s){
+	return env == "node" ? `\x1b[38;5;2m${s}\x1b[0m` : "%c" + s;
+}
+
+function red(s){
+	return env == "node" ? `\x1b[38;5;1m${s}\x1b[0m` : "%c" + s;
+}
+
 function runSolutions( expected = ""){
 	expected = expected.split(/\n/).map( x => x.trim());
 	console.log(`AoC ${year} day ${day}`);
@@ -40,7 +48,10 @@ function runSolutions( expected = ""){
 		let answer = globalThis[s]().toString().trim(),
 			status = expected[i] == undefined
 				? " "
-				: `${answer == expected[i] ? "\x1b[38;5;2m✓\x1b[0m" : "\x1b[38;5;1m✗\x1b[0m"}`;
+				: `${answer == expected[i] ? green("✓") : red("✗")}`,
+			color = expected[i] == undefined
+				? ""
+				: `color:${answer == expected[i]? "green" : "red"}`;
 		console.log( `${(s+"  ").slice(0,6)}: ${status} ${answer}`);
 	});
 }
