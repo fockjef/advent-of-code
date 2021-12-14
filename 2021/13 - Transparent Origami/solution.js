@@ -13,14 +13,14 @@ function gold(){
         dots = data[0].split(/\n/).map( d => d.split(",").map(Number)),
         folds = data[1].split(/\n/);
     folds.forEach( fold => makeFold( fold, dots));
-    let minRow = Math.min( ...d.map(d=>d[1])),
-        maxRow = Math.max( ...d.map(d=>d[1])),
-        minCol = Math.min( ...d.map(d=>d[0])),
-        maxCol = Math.max( ...d.map(d=>d[0])),
+    let minRow = Math.min( ...dots.map(d=>d[1])),
+        maxRow = Math.max( ...dots.map(d=>d[1])),
+        minCol = Math.min( ...dots.map(d=>d[0])),
+        maxCol = Math.max( ...dots.map(d=>d[0])),
         sheet = Array.from( new Array(maxRow - minRow + 1), x => new Array(maxCol - minCol + 1).fill("0")),
         code = "";
     dots.forEach( d => sheet[d[1] - minRow][d[0] - minCol] = "1");
-    for( let i = 0; i < sheet[0].length; i++ ){
+    for( let i = 0; i < sheet[0].length; i += 5 ){
         code += identifyLetter( sheet.map( row => row.slice( i, i + 5 )));
     }
     return code;
