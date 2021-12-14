@@ -4,9 +4,10 @@ import importlib, os, sys;
 
 year = sys.argv[1]
 day = int(sys.argv[2])
+dayDir = list(filter( lambda x: int(x[0:2]) == day, os.listdir(year)))[0]
 
-os.chdir( "%s/%02d" % ( year, day))
-solution = importlib.import_module( ".solution", package = "%s.%02d" % ( year, day))
+os.chdir( "%s/%s" % ( year, dayDir))
+solution = importlib.import_module( ".solution", package = "%s.%s" % ( year, dayDir))
 expected = {}
 if os.path.exists("expected.txt"):
     file = open("expected.txt")

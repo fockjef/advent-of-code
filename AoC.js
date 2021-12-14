@@ -16,7 +16,8 @@ const isLowerCase = s => reLowerCase.test(s);
 const env = typeof window == "undefined" ? "node" : "browser";
 let [ year, day] = env == "browser"
 	? (location.href.match( /^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/ ) || []).slice(1)
-	: process.argv.slice(2).map(Number);
+	: process.argv.slice(2).map(Number),
+	dayDir;
 if( +day < 10 ) day = "0" + (+day);
 
 function parseInput( mapFunc, delim = /\n/ ){
@@ -24,7 +25,7 @@ function parseInput( mapFunc, delim = /\n/ ){
 		delim = mapFunc;
 		mapFunc = undefined;
 	}
-	let data = env == "browser" ? document.body.innerText : readFile(`${year}/${day}/input.txt`);
+	let data = env == "browser" ? document.body.innerText : readFile(`${year}/${dayDir}/input.txt`);
 	data = data.trimRight().split( delim );
 	return mapFunc ? data.map( mapFunc ) : data;
 }
@@ -77,11 +78,12 @@ function runSolutions( expected = ""){
 		else{
 			if( typeof globalThis == "undefined" ) global.globalThis = global;
 			globalThis.fs = require("fs");
-			eval( readFile(`${year}/${day}/solution.js`) );
+			dayDir = fs.readdirSync(year.toString()).find( x => x.startsWith(day))
+			eval( readFile(`${year}/${dayDir}/solution.js`) );
 			try{ globalThis.silver = eval("silver") }catch(e){}
 			try{ globalThis.gold   = eval("gold")   }catch(e){}
-			let expected = fs.existsSync(`${year}/${day}/expected.txt`)
-				? readFile(`${year}/${day}/expected.txt`)
+			let expected = fs.existsSync(`${year}/${dayDir}/expected.txt`)
+				? readFile(`${year}/${dayDir}/expected.txt`)
 				: "";
 			runSolutions(expected);
 		}
