@@ -64,16 +64,18 @@ function runSolutions( expected = ""){
 	Run solution on command line:
 	node AoC.js {year} {day}
 */
-(function loader(){
+(async function loader(){
 	if( year && day ){
 		if( env == "browser" ){
+			let title = (await fetch(location.href.slice( 0, -6)).then( res => res.text())).match(/--- Day \d+: (.*?) ---/)[1];
+			dayDir = `${day} - ${title}`;
 			let script = document.head.appendChild( document.createElement( "script" ) );
 			script.onload = () => {
 				let script = document.head.appendChild( document.createElement( "script" ) );
 				script.onerror = () => runSolutions();
-				script.src = `https://fockjef.net/softcors/?ctype=jsonp&callback=runSolutions&url=https%3A%2F%2Ffockjef.net%2Fadvent-of-code%2F${year}%2F${day}%2Fexpected.txt`;
+				script.src = `https://fockjef.net/softcors/?ctype=jsonp&callback=runSolutions&url=https%3A%2F%2Ffockjef.net%2Fadvent-of-code%2F${year}%2F${dayDir}%2Fexpected.txt`;
 			};
-			script.src = `https://fockjef.net/advent-of-code/${year}/${day}/solution.js`;
+			script.src = `https://fockjef.net/advent-of-code/${year}/${dayDir}/solution.js`;
 		}
 		else{
 			if( typeof globalThis == "undefined" ) global.globalThis = global;
