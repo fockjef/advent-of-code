@@ -1,5 +1,17 @@
 /* --- Day 5: Hydrothermal Venture --- */
 
+function silver(){
+    let data = parseInput( x => x.match(/\d+/g).map(Number)),
+        vents = data.filter( ([ x0, y0, x1, y1]) => x0 == x1 || y0 == y1);
+    return countOverlaps(vents);
+}
+
+function gold(){
+    let data = parseInput( x => x.match(/\d+/g).map(Number)),
+        vents = data;
+    return countOverlaps(vents);
+}
+
 function countOverlaps(vents){
     let xMin = Math.min( ...vents.map( ([ x0, y0, x1, y1]) => Math.min( x0, x1))),
         yMin = Math.min( ...vents.map( ([ x0, y0, x1, y1]) => Math.min( y0, y1))),
@@ -16,16 +28,4 @@ function countOverlaps(vents){
         }
     });
     return sum(seafloor.map( row => row.filter( n => n > 1).length));
-}
-
-function day_05a(){
-    let data = parseInput( x => x.match(/\d+/g).map(Number)),
-        vents = data.filter( ([ x0, y0, x1, y1]) => x0 == x1 || y0 == y1);
-    return countOverlaps(vents);
-}
-
-function day_05b(){
-    let data = parseInput( x => x.match(/\d+/g).map(Number)),
-        vents = data;
-    return countOverlaps(vents);
 }

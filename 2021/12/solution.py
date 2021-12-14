@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+# --- Day 12: Passage Pathing ---
 
 # read input as list of binary strings
-input = open( "day_12.input")
+input = open( "input.txt")
 data = [ x.strip().split("-") for x in input.readlines() ]
 input.close()
 
@@ -13,7 +14,7 @@ def pathValidator2( nextNode, path):
     if pathValidator1( nextNode, path):
         return True
     smallCaves = list(filter( str.islower, path))
-    return len(smallCaves) = len(set(smallCaves))
+    return len(smallCaves) == len(set(smallCaves))
 
 def countPaths( path, nodes, pathValidator):
     currentNode = path[0]

@@ -1,6 +1,5 @@
 /* --- Day 2: Dive! --- */
 
-// solutions
 function silver(){
 	let depth = 0,
 	    hpos = 0;

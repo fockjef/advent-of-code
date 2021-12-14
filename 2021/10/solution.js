@@ -1,5 +1,23 @@
 /* --- Day 10: Syntax Scoring --- */
 
+function silver(){
+    return sum(
+        parseInput()
+        .map(checkSyntax)
+        .filter( x => !x.isValid && x.error.corrupt)
+        .map(scoreCorrupt)
+    );
+}
+
+function gold(){
+    return median(
+        parseInput()
+        .map(checkSyntax)
+        .filter( x => !x.isValid && !x.error.corrupt)
+        .map(scoreIncomplete)
+    );
+}
+
 function checkSyntax(x){
     const tagPairs = /\(\)|\[\]|\{\}|<>/g;
     while( tagPairs.test(x) ){
@@ -33,22 +51,3 @@ function scoreIncomplete(x){
     };
     return parseInt( x.error.incomplete.split("").map( tag => score[tag]).reverse().join(""), 5);
 }
-
-function day_10a(){
-    return sum(
-        parseInput()
-        .map(checkSyntax)
-        .filter( x => !x.isValid && x.error.corrupt)
-        .map(scoreCorrupt)
-    );
-}
-
-function day_10b(){
-    return median(
-        parseInput()
-        .map(checkSyntax)
-        .filter( x => !x.isValid && !x.error.corrupt)
-        .map(scoreIncomplete)
-    );
-}
-

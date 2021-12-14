@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+# --- Day 9: Smoke Basin ---
 
 # read input as 2d list of numbers
-input = open( "day_09.input")
+input = open( "input.txt")
 data = [ list(map( int, x.strip())) for x in input.readlines() ]
 input.close()
 

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+# --- Day 7: The Treachery of Whales ---
 
 import math
 
 # read input as list integers seperated by ","
-input = open( "day_07.input")
+input = open( "input.txt")
 data = [ int(x) for x in input.readline().split(",")]
 input.close()
 

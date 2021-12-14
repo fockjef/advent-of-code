@@ -12,7 +12,7 @@ function day_18b(){
 	return day_18a( {
 		"+": { precedence: 2, assoc: "L", func: ( a, b ) => a + b },
 		"*": { precedence: 1, assoc: "L", func: ( a, b ) => a * b }
-    } );
+	} );
 }
 
 function evalNewMath( equation, operators ){

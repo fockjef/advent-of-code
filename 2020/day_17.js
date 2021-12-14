@@ -1,5 +1,7 @@
 /* --- Day 17: Conway Cubes --- */
 
+var expected = [ 230, 1600];
+
 function day_17a( numDim = 3, numIter = 6 ){
 	let alive = new Set(),
 	    neigh = getNeigh( numDim );
@@ -17,6 +19,9 @@ function day_17a( numDim = 3, numIter = 6 ){
 function day_17b(){
 	return day_17a( 4 );
 }
+
+day_17a.expected = 231;
+day_17b.expected = 1600;
 
 function evolve( alive, neigh ){
 	let world = [],

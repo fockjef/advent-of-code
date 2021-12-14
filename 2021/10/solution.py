@@ -1,10 +1,11 @@
 #!/usr/bin/python3
+# --- Day 10: Syntax Scoring ---
 
 import re
 import statistics
 
 # read input as list of binary strings
-input = open( "day_10.input")
+input = open( "input.txt")
 data = [ x.strip() for x in input.readlines() ]
 input.close()
 

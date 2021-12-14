@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+#* --- Day 4: Giant Squid ---
 
 # read input delimited by \n\n
-input = open( "day_04.input")
+input = open( "input.txt")
 data = input.read().split("\n\n")
 input.close()
 

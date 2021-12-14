@@ -46,7 +46,7 @@ function runSolutions( expected = ""){
 	console.log(`AoC ${year} day ${day}`);
 	[ "silver", "gold"].forEach( ( s, i) => {
 		let answer = globalThis[s]().toString().trim(),
-			status = expected[i] == undefined
+			status = !expected[i]
 				? " "
 				: `${answer == expected[i] ? green("✓") : red("✗")}`,
 			color = env == "node" || expected[i] == undefined
@@ -69,7 +69,7 @@ function runSolutions( expected = ""){
 			let script = document.head.appendChild( document.createElement( "script" ) );
 			script.onload = () => {
 				let script = document.head.appendChild( document.createElement( "script" ) );
-				script.onerror = runSolutions;
+				script.onerror = () => runSolutions();
 				script.src = `https://fockjef.net/softcors/?ctype=jsonp&callback=runSolutions&url=https%3A%2F%2Ffockjef.net%2Fadvent-of-code%2F${year}%2F${day}%2Fexpected.txt`;
 			};
 			script.src = `https://fockjef.net/advent-of-code/${year}/${day}/solution.js`;

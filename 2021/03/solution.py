@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+# --- Day 3: Binary Diagnostic ---
 
 # read input as list of binary strings
-input = open( "day_03.input")
+input = open( "input.txt")
 data = [ x.strip() for x in input.readlines() ]
 input.close()
 

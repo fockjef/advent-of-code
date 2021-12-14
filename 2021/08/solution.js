@@ -1,5 +1,16 @@
 /* --- Day 8: Seven Segment Search --- */
 
+function silver(){
+    let data = parseInput( x => x.match(/[a-g]+/g)),
+        outputs = [].concat( ...data.map( x => x.slice(-4)));
+    return outputs.filter( pattern => [2,3,4,7].includes(pattern.length)).length;
+}
+
+function gold(){
+    let data = parseInput( x => x.match(/[a-g]+/g));
+    return sum( data.map( d => decode( d.slice(0, 10), d.slice(-4))));
+}
+
 function patternToNum(pattern){
     return sum(
         pattern
@@ -28,15 +39,4 @@ function decode( patterns, output){
     digits[5] = patterns.splice( patterns.findIndex( p => bitCount(p & digits[9]) == 5), 1)[0]; 
     digits[2] = patterns[0];
     return parseInt( output.map( p => digits.indexOf(patternToNum(p))).join(""), 10);
-}
-
-function day_08a(){
-    let data = parseInput( x => x.match(/[a-g]+/g)),
-        outputs = [].concat( ...data.map( x => x.slice(-4)));
-    return outputs.filter( pattern => [2,3,4,7].includes(pattern.length)).length;
-}
-
-function day_08b(){
-    let data = parseInput( x => x.match(/[a-g]+/g));
-    return sum( data.map( d => decode( d.slice(0, 10), d.slice(-4))));
 }

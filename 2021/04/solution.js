@@ -1,6 +1,6 @@
 /* --- Day 4: Giant Squid --- */
 
-function day_04a(){
+function silver(){
 	let data = parseInput(/\n\n/),
 	    randNums = data[0].split(",").map(Number),
         bingoCards = data.slice(1).map( card => card.split(/\n/).map( x => x.match(/\d+/g).map(Number)));
@@ -20,7 +20,7 @@ function day_04a(){
     }
 }
 
-function day_04b(){
+function gold(){
 	let data = parseInput(/\n\n/),
 	    randNums = data[0].split(",").map(Number),
         bingoCards = data.slice(1).map( card => card.split(/\n/).map( x => x.match(/\d+/g).map(Number)));

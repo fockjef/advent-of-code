@@ -1,5 +1,32 @@
 /* --- Day 9: Smoke Basin --- */
 
+function silver(){
+    let heightmap = parseInput( x => x.trim().split("").map(Number)),
+        lowPoints = 0;
+    for( let row = 0; row < heightmap.length; row++ ){
+        for( let col = 0; col < heightmap[0].length; col++ ){
+            let val = heightmap[row][col];
+            if( getNeighbors( row, col, heightmap).every( n => n.val > val) ){
+                lowPoints += val + 1;
+            }
+        }
+    }
+    return lowPoints;
+}
+
+function gold(){
+    let heightmap = parseInput( x => x.trim().split("").map(Number)),
+        basins = [];
+    for( let row = 0; row < heightmap.length; row++ ){
+        for( let col = 0; col < heightmap.length; col++ ){
+            if( heightmap[row][col] != 9 ){
+                basins.push(getBasinSize( row, col, heightmap));
+            }
+        }
+    }
+    return prod(basins.sort(numericSortDesc).slice(0,3));
+}
+
 const neighborhood = [
     [ -1,  0], // U
     [  1,  0], // D
@@ -33,31 +60,4 @@ function getBasinSize( row, col, heightmap){
         });
     }
     return size;
-}
-
-function day_09a(){
-    let heightmap = parseInput( x => x.trim().split("").map(Number)),
-        lowPoints = 0;
-    for( let row = 0; row < heightmap.length; row++ ){
-        for( let col = 0; col < heightmap[0].length; col++ ){
-            let val = heightmap[row][col];
-            if( getNeighbors( row, col, heightmap).every( n => n.val > val) ){
-                lowPoints += val + 1;
-            }
-        }
-    }
-    return lowPoints;
-}
-
-function day_09b(){
-    let heightmap = parseInput( x => x.trim().split("").map(Number)),
-        basins = [];
-    for( let row = 0; row < heightmap.length; row++ ){
-        for( let col = 0; col < heightmap.length; col++ ){
-            if( heightmap[row][col] != 9 ){
-                basins.push(getBasinSize( row, col, heightmap));
-            }
-        }
-    }
-    return prod(basins.sort(numericSortDesc).slice(0,3));
 }

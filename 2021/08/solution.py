@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+# --- Day 8: Seven Segment Search ---
 
 import re
 
 # read input as list of numbers
-input = open( "day_08.input")
+input = open( "input.txt")
 data = [ re.findall( r"[a-g]+", x) for x in input.readlines() ]
 input.close()
 

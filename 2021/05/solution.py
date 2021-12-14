@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+# --- Day 5: Hydrothermal Venture ---
 
 import re
 
 # read input as list of coordinate pairs: x0, y0 -> x1, y1
-input = open( "day_05.input")
+input = open( "input.txt")
 data = [ list(map( int, re.findall( r"\d+", x))) for x in input.readlines()]
 input.close()
 

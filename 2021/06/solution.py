@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+# --- Day 6: Lanternfish ---
 
 # read input as list integers seperated by ","
-input = open( "day_06.input")
+input = open( "input.txt")
 data = [ int(x) for x in input.readline().split(",")]
 input.close()
 
