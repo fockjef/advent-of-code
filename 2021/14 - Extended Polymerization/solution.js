@@ -19,12 +19,19 @@ function silver( numSteps = 10){
         }, {});
     }
 
-    // count number of each element in the polymer
+    // count number of each element in the polymer (actually double count)
     let counts = Object.keys(polymer).reduce( ( C, pair) => {
         pair.split("").forEach( p => C[p] = (C[p] || 0) + polymer[pair]);
         return C;
     }, {})
-    counts = Object.values(counts).map( c => Math.floor( c / 2 + .5)).sort(numericSortAsc);
+    // adjust for endpoints not being double counted
+    counts[data[0][0]]++;
+    counts[data[0][data[0].length-1]]++;
+    counts = Object.values(counts).sort(numericSortAsc);
 
-    return counts[counts.length-1] - counts[0];
+    return (counts[counts.length-1] - counts[0]) / 2;
+}
+
+function gold(){
+    return silver(40);
 }
