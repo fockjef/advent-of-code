@@ -3,7 +3,7 @@
     <head>
         <script src="solution.js"></script>
         <script>
-            let grid, tableCells, numSteps = 0, numStepsDiv, flashLock = 0, prevTimestamp = 0, animationDuration = 333;
+            let grid, tableCells, numSteps, numStepsDiv, flashLock, prevTimestamp, animationDuration = 333;
             function runAnimation(timestamp){
                 if( timestamp - prevTimestamp >= animationDuration && !flashLock ){
                     let flashers = evolve(grid);
@@ -26,9 +26,12 @@
                 requestAnimationFrame(runAnimation);
             }
             window.onload = function(){
+                numSteps = 0;
+                flashLock = 0;
+                prevTimestamp = 0;
                 numStepsDiv = document.getElementById("steps");
-                if( location.search ){
-                    let size = location.search.slice(1) >>> 0 || 10;
+                if( location.hash ){
+                    let size = location.hash.slice(1) >>> 0 || 10;
                     grid = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random()*8+1>>>0));
                 }
                 else{
@@ -37,13 +40,16 @@
                 let sheet = document.head.appendChild(document.createElement("style")).sheet;
                 sheet.insertRule(`td.octopus { width: ${80/grid.length}vmin; height: ${80/grid[0].length}vmin; }`);
                 sheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
+                let seafloor = document.getElementById("seafloor");
+                seafloor.innerHTML = "";
                 tableCells = grid.map( row => {
-                    let tr = document.getElementById("seafloor").appendChild(document.createElement("tr"));
+                    let tr = seafloor.appendChild(document.createElement("tr"));
                     return row.map( () => tr.appendChild(document.createElement("td")));
                 });
                 tableCells.forEach( row => row.forEach( td => td.classList.add("octopus","energy1")));
                 requestAnimationFrame(runAnimation);
             };
+            window.onhashchange = window.onload;
         </script>
         <style>
             * {
