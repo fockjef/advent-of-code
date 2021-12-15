@@ -3,52 +3,93 @@
     <head>
         <script src="solution.js"></script>
         <script>
-            let grid, tableCells, numSteps, numStepsDiv, flashLock, prevTimestamp, animationDuration = 333;
+            let targetFPS = 5, // in milliseconds
+                animationDuration, energyLevels, flashLock, hashes, prevTimestamp, styleSheet, tableCells;
+
             function runAnimation(timestamp){
                 if( timestamp - prevTimestamp >= animationDuration && !flashLock ){
-                    let flashers = evolve(grid);
-                    for( let r = 0; r < grid.length; r++ ){
-                        for( let c = 0; c < grid[0].length; c++ ){
+					// update stats
+					stats.flashes.display.innerText = stats.flashes.value += flashLock = evolve(energyLevels).length;
+					stats.steps.display.innerText = ++stats.steps.value;
+                    if( stats.steps.value == 100 ){
+                        console.log( "Part 1: ", stats.flashes.value);
+                    }
+					stats.fps.value += timestamp - prevTimestamp;
+					if( stats.steps.value % targetFPS == 0 ){
+						stats.fps.display.innerText = Math.round(1000 * targetFPS / stats.fps.value);
+						stats.fps.value = 0;
+					}
+                    prevTimestamp = timestamp;
+
+                    // update display
+					let hash = flashLock + 1;
+                    for( let r = 0; r < energyLevels.length; r++ ){
+                        for( let c = 0; c < energyLevels[0].length; c++ ){
                             let td = tableCells[r][c];
-                            td.classList.replace( td.classList.item(1), "energy" + grid[r][c]);
+                            td.classList.replace( td.classList.item(1), "energy" + energyLevels[r][c]);
+                            hash = 1089 * hash + 33 * ( r * energyLevels[0].length + c) + energyLevels[r][c] >>> 0;
                         }
                     }
-                    flashLock = flashers.length;
-                    flashers.forEach( ([ r, c]) => {
-                        tableCells[r][c].onanimationend = function(){
-                            this.onanimationend = undefined;
-                            flashLock--;
-                        };
-                    });
-                    numStepsDiv.innerText = ++numSteps;
-                    prevTimestamp = timestamp;
+
+                    // check for cycles
+					if( !stats.cycleFound.value ){
+						if( hash in hashes ){
+							stats.cycleFound.display.innerText = `start: ${hashes[hash]}, length: ${stats.steps.value - hashes[hash]}`;
+							stats.cycleFound.value = true;
+                            console.log( "Part 2: ", hashes[hash]);
+						}
+						else{
+							hashes[hash] = stats.steps.value;
+						}
+					}
                 }
                 requestAnimationFrame(runAnimation);
             }
+
             window.onload = function(){
-                numSteps = 0;
-                flashLock = 0;
-                prevTimestamp = 0;
-                numStepsDiv = document.getElementById("steps");
-                if( location.hash ){
-                    let size = location.hash.slice(1) >>> 0 || 10;
-                    grid = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random()*8+1>>>0));
+                // initialize globals
+                flashLock = prevTimestamp = 0;
+                animationDuration = 1000 / targetFPS;
+				hashes = {};
+				[ "steps", "flashes", "cycleFound", "fps"].forEach( s => stats[s] = {
+					value: 0,
+					display: document.getElementById(s)
+				});
+                Object.values(stats).forEach( s => s.display.innerText = "---");
+                if( !styleSheet ) styleSheet = document.head.appendChild(document.createElement("style")).sheet;
+
+                // intialize octopuses
+                // defaults reads from div.#input in html body
+                // setting location hash to {{size}} creates random square grid of size {{size}}
+                if( location.hash && Number.isInteger(+location.hash.slice(1)) ){
+                    let size = location.hash.slice(1) >>> 0 || 15;
+                    energyLevels = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random()*8+1>>>0));
                 }
                 else{
-                    grid = document.getElementById("input").innerText.trim().split(/\s+/).map( x => x.split("").map(Number));
+                    energyLevels = document.getElementById("input").innerText.trim().split(/\s+/).map( x => x.split("").map(Number));
                 }
-                let sheet = document.head.appendChild(document.createElement("style")).sheet;
-                sheet.insertRule(`td.octopus { width: ${80/grid.length}vmin; height: ${80/grid[0].length}vmin; }`);
-                sheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
+
+                // build display table
                 let seafloor = document.getElementById("seafloor");
                 seafloor.innerHTML = "";
-                tableCells = grid.map( row => {
+                tableCells = energyLevels.map( row => {
                     let tr = seafloor.appendChild(document.createElement("tr"));
-                    return row.map( () => tr.appendChild(document.createElement("td")));
+                    return row.map( energy => {
+                        let td = tr.appendChild(document.createElement("td"));
+                        td.classList.add( "octopus", "energy" + energy);
+                        td.onanimationend = td.onanimationcancel = () => flashLock--;
+                        return td;
+                    });
                 });
-                tableCells.forEach( row => row.forEach( td => td.classList.add("octopus","energy1")));
+
+                // set styles to control octopus size and animation speed
+                while( styleSheet.cssRules.length ) styleSheet.deleteRule(0);
+                styleSheet.insertRule(`td.octopus { width: ${80/energyLevels.length}vmin; height: ${80/energyLevels[0].length}vmin; }`);
+                styleSheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
+
                 requestAnimationFrame(runAnimation);
             };
+
             window.onhashchange = window.onload;
         </script>
         <style>
@@ -68,16 +109,21 @@
             #input {
                 display: none;
             }
-            #steps {
+			#stats {
                 color: white;
+				display: flex;
                 font-family: monospace;
                 font-weight: bold;
-                padding-bottom: 2em;
-            }
-            #steps::before{
-                content: "# STEPS:";
-                padding-right: 0.5em;
-            }
+				justify-content: space-around;
+				padding-bottom: 2em;
+                text-align: center;
+				width: 80vmin;
+			}
+            #stats div::before  { display: block; }
+            #steps::before      { content: "STEPS"; }
+            #flashes::before    { content: "FLASHES"; }
+            #cycleFound::before { content: "CYCLE"; }
+            #fps::before        { content: "FPS"; }
             table {
                 border-collapse: collapse;
             }
@@ -96,7 +142,7 @@
             td.octopus.energy9 { opacity:  93% }
             td.octopus.energy0 { opacity: 100% }
             td.octopus::after {
-                background: radial-gradient( #ff7fbf 0%, transparent 70%);
+                background: radial-gradient( #ff7fffbf 0%, transparent 70%);
                 content: "";
                 display: block;
                 position: absolute;
@@ -125,8 +171,12 @@
             7322422833
             8152175168
         </div>
-        <div id="steps"></div>
+        <div id="stats">
+			<div id="steps"></div>
+			<div id="flashes"></div>
+			<div id="cycleFound"></div>
+			<div id="fps"></div>
+		</div>
         <table id="seafloor"></table>
     </body>
 </html>
-
