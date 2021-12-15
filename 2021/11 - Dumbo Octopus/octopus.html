@@ -4,25 +4,25 @@
         <script src="solution.js"></script>
         <script>
             let targetFPS = 5, // in milliseconds
-                animationDuration, energyLevels, flashLock, hashes, prevTimestamp, styleSheet, tableCells;
+                animationDuration, energyLevels, flashLock, hashes, prevTimestamp, stats, styleSheet, tableCells;
 
             function runAnimation(timestamp){
                 if( timestamp - prevTimestamp >= animationDuration && !flashLock ){
-					// update stats
-					stats.flashes.display.innerText = stats.flashes.value += flashLock = evolve(energyLevels).length;
-					stats.steps.display.innerText = ++stats.steps.value;
+                    // update stats
+                    stats.flashes.display.innerText = stats.flashes.value += flashLock = evolve(energyLevels).length;
+                    stats.steps.display.innerText = ++stats.steps.value;
                     if( stats.steps.value == 100 ){
                         console.log( "Part 1: ", stats.flashes.value);
                     }
-					stats.fps.value += timestamp - prevTimestamp;
-					if( stats.steps.value % targetFPS == 0 ){
-						stats.fps.display.innerText = Math.round(1000 * targetFPS / stats.fps.value);
-						stats.fps.value = 0;
-					}
+                    stats.fps.value += timestamp - prevTimestamp;
+                    if( stats.steps.value % targetFPS == 0 ){
+                        stats.fps.display.innerText = Math.round(1000 * targetFPS / stats.fps.value);
+                        stats.fps.value = 0;
+                    }
                     prevTimestamp = timestamp;
 
                     // update display
-					let hash = flashLock + 1;
+                    let hash = flashLock + 1;
                     for( let r = 0; r < energyLevels.length; r++ ){
                         for( let c = 0; c < energyLevels[0].length; c++ ){
                             let td = tableCells[r][c];
@@ -32,29 +32,31 @@
                     }
 
                     // check for cycles
-					if( !stats.cycleFound.value ){
-						if( hash in hashes ){
-							stats.cycleFound.display.innerText = `start: ${hashes[hash]}, length: ${stats.steps.value - hashes[hash]}`;
-							stats.cycleFound.value = true;
+                    if( !stats.cycleFound.value ){
+                        if( hash in hashes ){
+                            stats.cycleFound.display.innerText = `start: ${hashes[hash]}, length: ${stats.steps.value - hashes[hash]}`;
+                            stats.cycleFound.value = true;
                             console.log( "Part 2: ", hashes[hash]);
-						}
-						else{
-							hashes[hash] = stats.steps.value;
-						}
-					}
+                        }
+                        else{
+                            hashes[hash] = stats.steps.value;
+                        }
+                    }
                 }
                 requestAnimationFrame(runAnimation);
             }
 
             window.onload = function(){
                 // initialize globals
-                flashLock = prevTimestamp = 0;
                 animationDuration = 1000 / targetFPS;
-				hashes = {};
-				[ "steps", "flashes", "cycleFound", "fps"].forEach( s => stats[s] = {
-					value: 0,
-					display: document.getElementById(s)
-				});
+                flashLock = 0
+                hashes = {};
+                prevTimestamp = performance.now();
+                stats = {};
+                [ "steps", "flashes", "cycleFound", "fps"].forEach( s => stats[s] = {
+                    value: 0,
+                    display: document.getElementById(s)
+                });
                 Object.values(stats).forEach( s => s.display.innerText = "---");
                 if( !styleSheet ) styleSheet = document.head.appendChild(document.createElement("style")).sheet;
 
@@ -109,16 +111,16 @@
             #input {
                 display: none;
             }
-			#stats {
+            #stats {
                 color: white;
-				display: flex;
+                display: flex;
                 font-family: monospace;
                 font-weight: bold;
-				justify-content: space-around;
-				padding-bottom: 2em;
+                justify-content: space-around;
+                padding-bottom: 2em;
                 text-align: center;
-				width: 80vmin;
-			}
+                width: 80vmin;
+            }
             #stats div::before  { display: block; }
             #steps::before      { content: "STEPS"; }
             #flashes::before    { content: "FLASHES"; }
@@ -172,11 +174,11 @@
             8152175168
         </div>
         <div id="stats">
-			<div id="steps"></div>
-			<div id="flashes"></div>
-			<div id="cycleFound"></div>
-			<div id="fps"></div>
-		</div>
+            <div id="steps"></div>
+            <div id="flashes"></div>
+            <div id="cycleFound"></div>
+            <div id="fps"></div>
+        </div>
         <table id="seafloor"></table>
     </body>
 </html>
