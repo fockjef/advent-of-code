@@ -3,26 +3,27 @@
     <head>
         <script src="solution.js"></script>
         <script>
-            let grid, tableCells, numSteps = 0, numStepsDiv, animationDuration = 333;
-            function runAnimation(){
-                let flashers = evolve(grid),
-                    flashLock = flashers.length,
-                    flashStart = performance.now();
-                flashers.forEach( ([ r, c]) => {
-                    tableCells[r][c].onanimationend = function(){
-                        this.onanimationend = undefined;
-                        this.classList.remove("flash");
-                        flashLock--;
-                        if( flashLock == 0 ){
-                            runAnimation();
+            let grid, tableCells, numSteps = 0, numStepsDiv, flashLock = 0, prevTimestamp = 0, animationDuration = 333;
+            function runAnimation(timestamp){
+                if( timestamp - prevTimestamp >= animationDuration && !flashLock ){
+                    let flashers = evolve(grid);
+                    for( let r = 0; r < grid.length; r++ ){
+                        for( let c = 0; c < grid[0].length; c++ ){
+                            let td = tableCells[r][c];
+                            td.classList.replace( td.classList.item(1), "energy" + grid[r][c]);
                         }
-                    };
-                    tableCells[r][c].classList.add("flash")
-                });
-                numStepsDiv.innerText = ++numSteps;
-                if( flashers.length == 0 ){
-                    setTimeout( runAnimation, animationDuration);
+                    }
+                    flashLock = flashers.length;
+                    flashers.forEach( ([ r, c]) => {
+                        tableCells[r][c].onanimationend = function(){
+                            this.onanimationend = undefined;
+                            flashLock--;
+                        };
+                    });
+                    numStepsDiv.innerText = ++numSteps;
+                    prevTimestamp = timestamp;
                 }
+                requestAnimationFrame(runAnimation);
             }
             window.onload = function(){
                 numStepsDiv = document.getElementById("steps");
@@ -35,13 +36,13 @@
                 }
                 let sheet = document.head.appendChild(document.createElement("style")).sheet;
                 sheet.insertRule(`td.octopus { width: ${80/grid.length}vmin; height: ${80/grid[0].length}vmin; }`);
-                sheet.insertRule(`td.octopus.flash::after{ animation-duration: ${animationDuration}ms; }`);
+                sheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
                 tableCells = grid.map( row => {
                     let tr = document.getElementById("seafloor").appendChild(document.createElement("tr"));
                     return row.map( () => tr.appendChild(document.createElement("td")));
                 });
-                tableCells.forEach( row => row.forEach( td => td.classList.add("octopus")));
-                runAnimation();
+                tableCells.forEach( row => row.forEach( td => td.classList.add("octopus","energy1")));
+                requestAnimationFrame(runAnimation);
             };
         </script>
         <style>
@@ -75,21 +76,31 @@
                 border-collapse: collapse;
             }
             td.octopus {
-                background: no-repeat center/100% 100% url(octopus.png);
+                background: no-repeat center/ 100% 100% url(octopus.png);
                 position: relative;
             }
+            td.octopus.energy1 { opacity:  33% }
+            td.octopus.energy2 { opacity:  40% }
+            td.octopus.energy3 { opacity:  48% }
+            td.octopus.energy4 { opacity:  55% }
+            td.octopus.energy5 { opacity:  63% }
+            td.octopus.energy6 { opacity:  70% }
+            td.octopus.energy7 { opacity:  78% }
+            td.octopus.energy8 { opacity:  85% }
+            td.octopus.energy9 { opacity:  93% }
+            td.octopus.energy0 { opacity: 100% }
             td.octopus::after {
                 background: radial-gradient( #ff7fbf 0%, transparent 70%);
                 content: "";
                 display: block;
                 position: absolute;
             }
-            td.octopus.flash::after{
+            td.octopus.energy0::after{
                 animation: glow 1 ease-out;
             }
             @keyframes glow{
-                0% {width:   0%; height:   0%; top: 50%; left: 50%; }
-                33% {width: 100%; height: 100%; top:  0%; left:  0%; }
+                  0% {width:   0%; height:   0%; top: 50%; left: 50%; }
+                 33% {width: 100%; height: 100%; top:  0%; left:  0%; }
                 100% {width:   0%; height:   0%; top: 50%; left: 50%; }
             }
         </style>
