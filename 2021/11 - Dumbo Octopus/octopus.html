@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="solution.js"></script>
+        <script>
+            let grid, tableCells, flashers = [], prevTimestamp = 0, numSteps = 0, numStepsDiv;
+            function runAnimation(timestamp){
+                if( timestamp - prevTimestamp > 200 ){
+                    if( flashers.length ){
+                        flashers.forEach( ([ r, c]) => tableCells[r][c].classList.remove("flash"));
+                        flashers.length = 0;
+                    }
+                    else{
+                        flashers = evolve(grid);
+                        flashers.forEach( ([ r, c]) => tableCells[r][c].classList.add("flash"));
+                        prevTimestamp = timestamp;
+                        numStepsDiv.innerText = ++numSteps;
+                    }
+                }
+                requestAnimationFrame(runAnimation);
+            }
+            window.onload = function(){
+                numStepsDiv = document.getElementById("steps");
+                if( location.search ){
+                    let size = location.search.slice(1) >>> 0 || 10;
+                    grid = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random()*8+1>>>0));
+                }
+                else{
+                    grid = document.getElementById("input").innerText.trim().split(/\s+/).map( x => x.split("").map(Number));
+                }
+                document.head.appendChild(document.createElement("style")).sheet.insertRule(
+                    `td.octopus { width: ${80/grid.length}vmin; height: ${80/grid[0].length}vmin; }`
+                );
+                tableCells = grid.map( row => {
+                    let tr = document.getElementById("seafloor").appendChild(document.createElement("tr"));
+                    return row.map( () => tr.appendChild(document.createElement("td")));
+                });
+                tableCells.forEach( row => row.forEach( td => td.classList.add("octopus")));
+                runAnimation();
+            };
+        </script>
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            body {
+                align-items: center;
+                background-color: #0e1f31;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                justify-content: center;
+                overflow: hidden;
+            }
+            #input {
+                display: none;
+            }
+            #steps {
+                color: white;
+                font-family: monospace;
+                font-weight: bold;
+                padding-bottom: 2em;
+            }
+            #steps::before{
+                content: "# STEPS:";
+                padding-right: 0.5em;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            td.octopus {
+                background: no-repeat center/100% 100% url(octopus.png);
+                position: relative;
+            }
+            td.octopus::after {
+                background: radial-gradient( #ff7fbf 0%, transparent 70%);
+                content: "";
+                display: block;
+                position: absolute;
+            }
+            td.octopus.flash::after{
+                animation: glow 0.2s 1 ease-out;
+            }
+            @keyframes glow{
+                0% {width:   0%; height:   0%; top: 50%; left: 50%; }
+                33% {width: 100%; height: 100%; top:  0%; left:  0%; }
+                100% {width:   0%; height:   0%; top: 50%; left: 50%; }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="input">
+        <!-- paste input here -->
+            3113284886
+            2851876144
+            2774664484
+            6715112578
+            7146272153
+            6256656367
+            3148666245
+            3857446528
+            7322422833
+            8152175168
+        </div>
+        <div id="steps"></div>
+        <table id="seafloor"></table>
+    </body>
+</html>
+
