@@ -60,12 +60,26 @@
                 Object.values(stats).forEach( s => s.display.innerText = "---");
                 if( !styleSheet ) styleSheet = document.head.appendChild(document.createElement("style")).sheet;
 
-                // intialize octopuses
+                // intialize octopus swarm
                 // defaults reads from div.#input in html body
-                // setting location hash to {{size}} creates random square grid of size {{size}}
-                if( location.hash && Number.isInteger(+location.hash.slice(1)) ){
-                    let size = location.hash.slice(1) >>> 0 || 15;
-                    energyLevels = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random()*8+1>>>0));
+                // setting location hash to {{string_of_digits}} initializes a square grid using {{string_of_digits}}
+                // where length {{string_of_digits}} is a square number
+                // setting location hash to {{size}} creates square grid of size {{size}} with random energy levels
+                // where size < 1000
+                if( location.hash ){
+                    let hash = location.hash.slice(1);
+                    if( /^\d+$/.test(hash) ){
+                        if( hash.length > 3 && Number.isInteger(Math.sqrt(hash.length)) ){
+                            let size = Math.sqrt(hash.length);
+                            energyLevels = hash.match(new RegExp( `\\d{${size}}`, "g")).map( x => x.split("").map(Number));
+                        }
+                        else{
+                           let size = Math.min( hash >>> 0 || 10, 999);
+                           energyLevels = Array.from( new Array(size), () => Array.from( new Array(size), () => Math.random() * 8 + 1 >>> 0));
+                        }
+                    }
+                    else if( Number.isInteger(+hash) ){
+                    }
                 }
                 else{
                     energyLevels = document.getElementById("input").innerText.trim().split(/\s+/).map( x => x.split("").map(Number));
@@ -161,7 +175,6 @@
     </head>
     <body>
         <div id="input">
-        <!-- paste input here -->
             3113284886
             2851876144
             2774664484
