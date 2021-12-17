@@ -2,8 +2,12 @@
 
 function silver(){
     let data = parseInput()[0].match(/-?\d+/g).map(Number),
-        target = { x0: data[0], x1: data[1], y0: data[2], y1: data[3] };
-    return target.y0 * (target.y0 + 1) / 2;
+        target = { x0: data[0], x1: data[1], y0: data[2], y1: data[3] },
+        minVelX = Math.ceil(invertSumN(target.x0));
+    if( minVelX * (minVelX + 1) / 2 <= target.x1 ){
+        return target.y0 * (target.y0 + 1) / 2;
+    }
+    return undefined;
 }
 
 function gold(){
@@ -53,9 +57,8 @@ function gold(){
     return validVelXY.length;
 }
 
-function invertSumN(sum){
-    return Math.sqrt(2 * sum + .25) - .5;
-}
+const sumN = n => n * (n + 1) / 2;
+const invertSumN = sum => Math.sqrt(2 * sum + .25) - .5;
 
 function brutalForce(target){
     let validVelXY = [];
