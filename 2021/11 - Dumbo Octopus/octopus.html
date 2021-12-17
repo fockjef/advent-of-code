@@ -3,21 +3,24 @@
     <head>
         <script src="solution.js"></script>
         <script>
-            let targetFPS = 5, // in milliseconds
-                animationDuration, energyLevels, flashLock, hashes, prevTimestamp, stats, styleSheet, tableCells;
+            let targetFPS = 10,
+                animationDuration, energyLevels, flash100, flashLock, hashes, prevTimestamp, stats, stepsFPS, styleSheet, tableCells;
 
             function runAnimation(timestamp){
-                if( timestamp - prevTimestamp >= animationDuration && !flashLock ){
+                if( animationDuration && timestamp - prevTimestamp >= animationDuration && !flashLock ){
                     // update stats
-                    stats.flashes.display.innerText = stats.flashes.value += flashLock = evolve(energyLevels).length;
+                    stats.flashes.value += flashLock = evolve(energyLevels).length;
+                    stats.flashes.display.innerText = stats.flashes.value + (flash100 ? ` (${flash100}*)` : "");
                     stats.steps.display.innerText = ++stats.steps.value;
                     if( stats.steps.value == 100 ){
-                        console.log( "Part 1: ", stats.flashes.value);
+                        flash100 = stats.flashes.value;
+                        console.log( "Part 1: ", flash100);
                     }
                     stats.fps.value += timestamp - prevTimestamp;
-                    if( stats.steps.value % targetFPS == 0 ){
-                        stats.fps.display.innerText = Math.round(1000 * targetFPS / stats.fps.value);
-                        stats.fps.value = 0;
+                    stepsFPS++;
+                    if( stats.fps.value > 500 ){
+                        stats.fps.display.innerHTML = `${targetFPS} (${Math.round(1000 * stepsFPS / stats.fps.value)})`;
+                        stats.fps.value = stepsFPS = 0;
                     }
                     prevTimestamp = timestamp;
 
@@ -34,7 +37,7 @@
                     // check for cycles
                     if( !stats.cycleFound.value ){
                         if( hash in hashes ){
-                            stats.cycleFound.display.innerText = `start: ${hashes[hash]}, length: ${stats.steps.value - hashes[hash]}`;
+                            stats.cycleFound.display.innerText = `${hashes[hash]}* (${stats.steps.value - hashes[hash]})`;
                             stats.cycleFound.value = true;
                             console.log( "Part 2: ", hashes[hash]);
                         }
@@ -46,10 +49,20 @@
                 requestAnimationFrame(runAnimation);
             }
 
+            function setFPS(fps){
+                targetFPS = Math.max( 0, Math.min( 30, fps));
+                stats.fps.display.innerText = `${targetFPS} (?)`;
+                stats.fps.value = stepsFPS = 0;
+                animationDuration = targetFPS == 0 ? 0 : 1000 / targetFPS;
+                if( styleSheet.cssRules.length > 1 ) styleSheet.deleteRule(0);
+                styleSheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
+            }
+
             window.onload = function(){
                 // initialize globals
                 animationDuration = 1000 / targetFPS;
-                flashLock = 0
+                flash100 = false;
+                flashLock = 0;
                 hashes = {};
                 prevTimestamp = performance.now();
                 stats = {};
@@ -57,7 +70,7 @@
                     value: 0,
                     display: document.getElementById(s)
                 });
-                Object.values(stats).forEach( s => s.display.innerText = "---");
+                Object.values(stats).forEach( s => s.display.innerText = `---`);
                 if( !styleSheet ) styleSheet = document.head.appendChild(document.createElement("style")).sheet;
 
                 // intialize octopus swarm
@@ -101,7 +114,7 @@
                 // set styles to control octopus size and animation speed
                 while( styleSheet.cssRules.length ) styleSheet.deleteRule(0);
                 styleSheet.insertRule(`td.octopus { width: ${80/energyLevels.length}vmin; height: ${80/energyLevels[0].length}vmin; }`);
-                styleSheet.insertRule(`td.octopus.energy0::after{ animation-duration: ${animationDuration}ms; }`);
+		setFPS(targetFPS);
 
                 requestAnimationFrame(runAnimation);
             };
@@ -121,6 +134,7 @@
                 height: 100vh;
                 justify-content: center;
                 overflow: hidden;
+                user-select: none;
             }
             #input {
                 display: none;
@@ -135,11 +149,25 @@
                 text-align: center;
                 width: 80vmin;
             }
+            #stats div {
+                display: inline-block;
+                vertical-align: top;
+            }
             #stats div::before  { display: block; }
             #steps::before      { content: "STEPS"; }
             #flashes::before    { content: "FLASHES"; }
             #cycleFound::before { content: "CYCLE"; }
             #fps::before        { content: "FPS"; }
+            button {
+                background: none;
+                border: 1px solid transparent;
+                border-radius: 50%;
+                color: white;
+                width: 1.25em;
+            }
+            button:hover {
+                background: #285a8f;
+            }
             table {
                 border-collapse: collapse;
             }
@@ -190,7 +218,11 @@
             <div id="steps"></div>
             <div id="flashes"></div>
             <div id="cycleFound"></div>
-            <div id="fps"></div>
+            <div>
+                <button onclick="setFPS(targetFPS-1)">−</button>
+                <div id="fps"></div>
+                <button onclick="setFPS(targetFPS+1)">+</button>
+            </div>
         </div>
         <table id="seafloor"></table>
     </body>
