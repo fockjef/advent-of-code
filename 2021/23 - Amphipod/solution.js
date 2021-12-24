@@ -3,7 +3,19 @@
 function silver(){
     let data = parseInput( x => x.split("")),
         board = data.slice( 1, -1).map( row => row.slice( 1, -1));
-    return organizeAmphipods(board);
+    Object.values(amphipods).forEach( a => board[0][a.roomIdx] = ":");
+    return organizeAmphipods( board, {});
+}
+
+function gold(){
+    let data = parseInput( x => x.split("")),
+        board = data.slice( 1, -1).map( row => row.slice( 1, -1));
+    Object.values(amphipods).forEach( a => board[0][a.roomIdx] = ":");
+    board.splice( 2, 0,
+        " #D#C#B#A#".split(""),
+        " #D#B#A#C#".split("")
+    );
+    return organizeAmphipods( board, {});
 }
 
 const amphipods = {
@@ -12,18 +24,20 @@ const amphipods = {
     "C": { roomIdx: 6, moveCost:  100},
     "D": { roomIdx: 8, moveCost: 1000}
 }
+
 const reAmphipod = new RegExp("[" + Object.keys(amphipods).join("") + "]");
-const cache = {};
-function organizeAmphipods( board, depth = 1){
+
+function organizeAmphipods( board, cache){
     let key = board.map( row => row.join("")).join("");
     if( key in cache ) return cache[key];
-    if( depth == MAXDEPTH ){
-        window.FOO = board;
-        return 0;
-    }
     let moves = findValidMoves(board);
-    if( findValidMoves.length == 0 ){
-        return board.some( row => row.some( col => reAmphipod.test(col))) ? Infinity : 0;
+    if( moves.length == 0 ){
+        if( board.some( row => row.some( col => reAmphipod.test(col))) ){
+            return Infinity;
+        }
+        else{
+            return 0;
+        }
     }
     return cache[key] = Math.min(...moves.map( ({ from, to}) => {
         let dist = Math.abs(from[0] - to[0]) + Math.abs(from[1] - to[1]),
@@ -31,9 +45,7 @@ function organizeAmphipods( board, depth = 1){
             amphi = b[from[0]][from[1]];
         b[from[0]][from[1]] = ".";
         b[to[0]][to[1]] = to[0] == 0 ? amphi : amphi.toLowerCase();
-        //console.log( amphipods[amphi].moveCost * dist);
-        let cost = amphipods[amphi].moveCost * dist + organizeAmphipods(b,depth+1);
-        if( depth == 1 ) console.log(cost);
+        let cost = amphipods[amphi].moveCost * dist + organizeAmphipods( b, cache);
         return cost;
     }));
 }
