@@ -1,5 +1,5 @@
 /* Helper functions */
-const sum = x => x.reduce( ( sum, n ) => sum + n, 0);
+const sum = x => x.reduce( ( sum, n ) => sum + Number(n), 0);
 const prod = x => x.reduce( ( prod, n ) => prod * n );
 const mean = x => sum(x) / x.length;
 const median = x => mean(x.slice().sort(numericSortAsc).slice( x.length - 1 >>> 1, (x.length >>> 1) + 1));

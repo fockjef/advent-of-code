@@ -1,18 +1,18 @@
 /* --- Day 21: Dirac Dice --- */
 
 function silver(){
-    let positions = parseInput( x => Number(x.slice(28))),
-        scores = [ 0, 0],
-        rollNum = 0,
-        die = 1;
-    while( scores[0] < 1000 && scores[1] < 1000 ){
-        let pId = rollNum % 2;
-        positions[pId] = (positions[pId] + 3 * die + 3) % 10 || 10;
-        scores[pId] += positions[pId];
-        die = (die + 3) % 100 || 100;
+    let data = parseInput( x => Number(x.slice(28))),
+        players = [
+            { score: 0, position: data[0]},
+            { score: 0, position: data[1]}
+        ],
+        die = 1,
+        rollNum = 0;
+    while( players[(rollNum+1)%2].score < 1000 ){
+        die = rollD100( players[rollNum%2], die);
         rollNum++;
     }
-    return Math.min(...scores) * 3 * rollNum;
+    return players[rollNum%2].score * 3 * rollNum;
 }
 
 function gold(){
@@ -56,3 +56,8 @@ const rolls = [
     { value: 8, frequency: 3},
     { value: 9, frequency: 1},
 ];
+
+function rollD100( player, die){
+    player.score += player.position = 1 + (player.position + 3 * (die + 1) - 1) % 10;
+    return 1 + (die + 3 - 1) % 100;
+}
