@@ -1,13 +1,19 @@
 /* Helper functions */
 const sum = x => x.reduce( ( sum, n ) => sum + Number(n), 0);
+Array.prototype.sum = function(){return sum(this)};
 const prod = x => x.reduce( ( prod, n ) => prod * n );
+Array.prototype.prod = function(){return prod(this)};
 const mean = x => sum(x) / x.length;
+Array.prototype.mean = function(){return mean(this)};
 const median = x => mean(x.slice().sort(numericSortAsc).slice( x.length - 1 >>> 1, (x.length >>> 1) + 1));
+Array.prototype.median = function(){return median(this)};
 const gcd = ( a, b) => b === 0 ? a : gcd( b, a % b );
 const lcm = ( a, b) => a * b / gcd( a, b );
 const cmp = ( a, b) => a < b ? -1 : a == b ? 0 : 1;
 const numericSortAsc = ( a, b) => cmp( a, b);
+Array.prototype.numericSortAsc = function(){return this.sort(numericSortAsc)};
 const numericSortDesc = ( a, b) => cmp( b, a);
+Array.prototype.numericSortDesc = function(){return this.sort(numericSortDesc)};
 const reUpperCase = /^[A-Z]+$/;
 const reLowerCase = /^[a-z]+$/;
 const isUpperCase = s => reUpperCase.test(s);
