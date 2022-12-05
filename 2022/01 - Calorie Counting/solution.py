@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 # --- Day 1: Calorie Counting ---
 
-input = open("input.txt")
-data = [ x.strip() for x in input.readlines() ]
-input.close()
+with open("input.txt") as input:
+    data = [ x.strip() for x in input.readlines() ]
 
 def countCalories(n):
     elves = [0]
