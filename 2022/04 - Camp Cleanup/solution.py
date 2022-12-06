@@ -21,3 +21,7 @@ def countOverlap(method):
 
 silver = lambda: countOverlap("superset")
 gold = lambda: countOverlap("intersect")
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())

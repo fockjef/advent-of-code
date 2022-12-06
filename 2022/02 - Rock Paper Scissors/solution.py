@@ -17,3 +17,7 @@ def calcScore(strategyId):
 
 silver = lambda: calcScore("silver")
 gold = lambda: calcScore("gold")
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())

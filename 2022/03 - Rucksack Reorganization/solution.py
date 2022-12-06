@@ -27,3 +27,7 @@ def gold():
                 total = total + priority(item)
                 break
     return total
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())

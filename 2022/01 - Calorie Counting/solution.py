@@ -16,3 +16,7 @@ def countCalories(n):
 
 silver = lambda: countCalories(1)
 gold = lambda: countCalories(3)
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())

@@ -11,7 +11,7 @@ def initializeStacks(stackDescription):
         list(zip(*reversed(stackDescription.splitlines())))[1::4]
     ))
 
-def silver(craneType = 9000):
+def moveCargo(craneType = 9000):
     stackDescription, instructions = data.split("\n\n", 1)
     stacks = initializeStacks(stackDescription)
     for instr in instructions.splitlines():
@@ -23,4 +23,9 @@ def silver(craneType = 9000):
         stacks[toStack-1].extend(cargo)
     return "".join([s[-1] for s in stacks])
 
-gold = lambda: silver(craneType=9001)
+silver = lambda: moveCargo(craneType=9000)
+gold = lambda: moveCargo(craneType=9001)
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())
