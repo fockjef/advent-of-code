@@ -23,8 +23,8 @@ def moveCargo(craneType = 9000):
         stacks[toStack-1].extend(cargo)
     return "".join([s[-1] for s in stacks])
 
-silver = lambda: moveCargo(craneType=9000)
-gold = lambda: moveCargo(craneType=9001)
+silver = lambda: moveCargo(craneType = 9000)
+gold = lambda: moveCargo(craneType = 9001)
 
 if __name__ == "__main__":
     print("silver: %s" % silver())
