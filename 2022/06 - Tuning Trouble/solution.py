@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# --- Day 6: Tuning Trouble ---
 
 with open("input.txt") as input:
     data = input.read().strip()
