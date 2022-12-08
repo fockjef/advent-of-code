@@ -19,7 +19,7 @@ for line in data:
                 cwd.append(line[5:])
         case _:
             size = int(line.split()[0])
-            for i in range(1, len(cwd)+1):
+            for i in range(2, len(cwd) + 1):
                 path = "/".join(cwd[1:i])
                 fileSystem[path] = fileSystem.get(path, 0) + size
 
@@ -27,4 +27,4 @@ silver = lambda: sum(filter(lambda size: size <= 100_000, fileSystem.values()))
 gold = lambda: min(filter(lambda size: size >= fileSystem[""] - 40_000_000, fileSystem.values()))
 
 print("silver: %s" % silver())
-print("gold:   %s" % gold())
+#print("gold:   %s" % gold())

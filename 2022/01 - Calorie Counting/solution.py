@@ -2,17 +2,15 @@
 # --- Day 1: Calorie Counting ---
 
 with open("input.txt") as input:
-    data = [ x.strip() for x in input.readlines() ]
+    data = input.read().strip()
 
 def countCalories(n):
-    elves = [0]
-    for val in data:
-        if val.isnumeric():
-            elves[0] = elves[0] + int(val)
-        else:
-            elves.insert(0,0)
-    elves.sort()
-    return sum(elves[-n:])
+    return sum(
+        sorted(
+            [sum(map(int, elf.split("\n"))) for elf in data.split("\n\n")],
+            reverse = True
+        )[0:n]
+    )
 
 silver = lambda: countCalories(1)
 gold = lambda: countCalories(3)
