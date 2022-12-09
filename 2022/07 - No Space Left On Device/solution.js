@@ -1,4 +1,4 @@
-/* --- Day 6: No Space Left On Device --- */
+/* --- Day 7: No Space Left On Device --- */
 
 // build file system
 let fileSystem = {},
