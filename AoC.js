@@ -20,6 +20,26 @@ Array.prototype.numericSortAsc = function(){return this.sort(numericSortAsc)};
 Array.prototype.numericSortDesc = function(){return this.sort(numericSortDesc)};
 Array.prototype.max = function(){try{return Math.max(...this)}catch(e){return this.numericSortDesc()[0]}};
 Array.prototype.min = function(){try{return Math.min(...this)}catch(e){return this.numericSortAsc ()[0]}};
+function* permute(a){
+	yield a;
+	let i = 1,
+	    c = new Array(a.length).fill(0);
+	while( i < a.length ){
+		if( c[i] < i ){
+			let swapIdx = i % 2 ? c[i] : 0,
+			    temp = a[swapIdx];
+			a[swapIdx] = a[i];
+			a[i] = temp;
+			yield a;
+			c[i]++;
+			i = 1;
+		}
+		else{
+			c[i] = 0;
+			i++;
+		}
+	}
+}
 
 const env = typeof window == "undefined" ? "node" : "browser";
 let [ year, day] = env == "browser"
@@ -91,13 +111,18 @@ function runSolutions(expected = ""){
             if( typeof globalThis == "undefined" ) global.globalThis = global;
             globalThis.fs = require("fs");
             dayDir = fs.readdirSync(year.toString()).find(x => x.startsWith(day))
-            eval(readFile(`${year}/${dayDir}/solution.js`) );
-            try{ globalThis.silver = eval("silver") }catch(e){}
-            try{ globalThis.gold   = eval("gold")   }catch(e){}
-            let expected = fs.existsSync(`${year}/${dayDir}/expected.txt`)
-                ? readFile(`${year}/${dayDir}/expected.txt`)
-                : "";
-            runSolutions(expected);
+            if( fs.existsSync(`${year}/${dayDir}/solution.js`) ){
+                eval(readFile(`${year}/${dayDir}/solution.js`) );
+                try{ globalThis.silver = eval("silver") }catch(e){}
+                try{ globalThis.gold   = eval("gold")   }catch(e){}
+                let expected = fs.existsSync(`${year}/${dayDir}/expected.txt`)
+                    ? readFile(`${year}/${dayDir}/expected.txt`)
+                    : "";
+                runSolutions(expected);
+            }
+            else{
+                console.log("No solution found.");
+            }
         }
     }
 })();

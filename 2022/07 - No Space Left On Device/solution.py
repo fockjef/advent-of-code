@@ -25,3 +25,7 @@ for line in data:
 
 silver = lambda: sum(filter(lambda size: size <= 100_000, fileSystem.values()))
 gold = lambda: min(filter(lambda size: size >= fileSystem[""] - 40_000_000, fileSystem.values()))
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())

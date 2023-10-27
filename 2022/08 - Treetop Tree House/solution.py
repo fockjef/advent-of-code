@@ -34,3 +34,7 @@ def gold():
             if score > highScore:
                 highScore = score
     return highScore
+
+if __name__ == "__main__":
+    print("silver: %s" % silver())
+    print("gold:   %s" % gold())
