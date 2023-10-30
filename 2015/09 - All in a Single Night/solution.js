@@ -1,39 +1,45 @@
 /* --- Day 9: All in a Single Night --- */
 
-function silver(){
+function silver() {
     const routes = {};
     parseInput().forEach(route => {
         let [c1, , c2, , dist] = route.split(/\s+/);
-        if( !routes[c1] ) routes[c1] = {};
-        if( !routes[c2] ) routes[c2] = {};
+        if (!routes[c1]) routes[c1] = {};
+        if (!routes[c2]) routes[c2] = {};
         routes[c1][c2] = routes[c2][c1] = +dist;
     });
 
     let minDist = Infinity,
         allRoutes = permute(Object.keys(routes));
-    while(1){
+    while (1) {
         let route = allRoutes.next().value;
-        if( !route ) return minDist;
-        let dist = route.slice(0, -1).map((c, i) => routes[c][route[i+1]]).sum();
-        if( dist < minDist ) minDist = dist;
+        if (!route) return minDist;
+        let dist = route
+            .slice(0, -1)
+            .map((c, i) => routes[c][route[i + 1]])
+            .sum();
+        if (dist < minDist) minDist = dist;
     }
 }
 
-function gold(){
+function gold() {
     const routes = {};
     parseInput().forEach(route => {
         let [c1, , c2, , dist] = route.split(/\s+/);
-        if( !routes[c1] ) routes[c1] = {};
-        if( !routes[c2] ) routes[c2] = {};
+        if (!routes[c1]) routes[c1] = {};
+        if (!routes[c2]) routes[c2] = {};
         routes[c1][c2] = routes[c2][c1] = +dist;
     });
 
     let maxDist = -Infinity,
         allRoutes = permute(Object.keys(routes));
-    while(1){
+    while (1) {
         let route = allRoutes.next().value;
-        if( !route ) return maxDist;
-        let dist = route.slice(0, -1).map((c, i) => routes[c][route[i+1]]).sum();
-        if( dist > maxDist ) maxDist = dist;
+        if (!route) return maxDist;
+        let dist = route
+            .slice(0, -1)
+            .map((c, i) => routes[c][route[i + 1]])
+            .sum();
+        if (dist > maxDist) maxDist = dist;
     }
 }

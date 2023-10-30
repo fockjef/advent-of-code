@@ -1,14 +1,14 @@
 /* --- Day 10: Elves Look, Elves Say --- */
 
-function silver(n = 40){
+function silver(n = 40) {
     let seq = parseInput()[0];
-    for( let i = 0; i < n; i++ ){
+    for (let i = 0; i < n; i++) {
         seq = lookAndSay(seq);
     }
     return seq.length;
 }
 
-function gold(){
+function gold() {
     return silver(50);
 }
 
