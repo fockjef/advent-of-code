@@ -6,8 +6,8 @@ const median = x => mean(x.slice().sort(numericSortAsc).slice(x.length - 1 >>> 1
 const gcd = (a, b) => b === 0 ? a : gcd(b, a % b );
 const lcm = (a, b) => a * b / gcd(a, b);
 const cmp = (a, b) => a < b ? -1 : a == b ? 0 : 1;
-const numericSortAsc = (a, b) => cmp(a, b);
-const numericSortDesc = (a, b) => cmp(b, a);
+const numericSortAsc = (a, b) => cmp(+a, +b);
+const numericSortDesc = (a, b) => cmp(+b, +a);
 const reUpperCase = /^[A-Z]+$/;
 const reLowerCase = /^[a-z]+$/;
 const isUpperCase = s => reUpperCase.test(s);
@@ -21,24 +21,24 @@ Array.prototype.numericSortDesc = function(){return this.sort(numericSortDesc)};
 Array.prototype.max = function(){try{return Math.max(...this)}catch(e){return this.numericSortDesc()[0]}};
 Array.prototype.min = function(){try{return Math.min(...this)}catch(e){return this.numericSortAsc ()[0]}};
 function* permute(a){
-	yield a;
-	let i = 1,
-	    c = new Array(a.length).fill(0);
-	while( i < a.length ){
-		if( c[i] < i ){
-			let swapIdx = i % 2 ? c[i] : 0,
-			    temp = a[swapIdx];
-			a[swapIdx] = a[i];
-			a[i] = temp;
-			yield a;
-			c[i]++;
-			i = 1;
-		}
-		else{
-			c[i] = 0;
-			i++;
-		}
-	}
+    yield a;
+    let i = 1,
+        c = new Array(a.length).fill(0);
+    while( i < a.length ){
+        if( c[i] < i ){
+            let swapIdx = i % 2 ? c[i] : 0,
+                temp = a[swapIdx];
+            a[swapIdx] = a[i];
+            a[i] = temp;
+            yield a;
+            c[i]++;
+            i = 1;
+        }
+        else{
+            c[i] = 0;
+            i++;
+        }
+    }
 }
 
 const env = typeof window == "undefined" ? "node" : "browser";
