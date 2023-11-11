@@ -12,12 +12,9 @@ function silver() {
 
 function gold() {
     let containers = parseInput(Number).numericSortAsc(),
-        combos = findNumberCombos(150, containers),
         minCount = Infinity,
         numWays = 0;
-    while (1) {
-        let c = combos.next().value;
-        if (!c) break;
+    for (let c of findNumberCombos(150, containers)) {
         if (c.length < minCount) {
             minCount = c.length;
             numWays = 1;

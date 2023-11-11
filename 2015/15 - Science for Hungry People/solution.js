@@ -4,11 +4,8 @@ function silver(numCalories) {
     let ingredients = parseInput(x =>
             Object.fromEntries(x.match(/\w+ -?\w+/g).map(q => q.split(' ')))
         ),
-        recipes = getItemCounts(ingredients.length, 100),
         maxScore = -Infinity;
-    while (1) {
-        let recipe = recipes.next().value;
-        if (!recipe) break;
+    for (let recipe of getItemCounts(ingredients.length, 100)) {
         let {score, calories} = scoreRecipe(recipe, ingredients);
         if (
             (numCalories == undefined || calories == numCalories) &&

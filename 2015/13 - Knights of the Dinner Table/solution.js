@@ -21,11 +21,8 @@ function parseHappinessList() {
 }
 
 function maxHappiness(happy) {
-    let seats = permute(Object.keys(happy)),
-        maxHappiness = -Infinity;
-    while (1) {
-        let s = seats.next().value;
-        if (!s) break;
+    let maxHappiness = -Infinity;
+    for (let s of permute(Object.keys(happy))) {
         let happiness = s
             .map(
                 (p, i) =>

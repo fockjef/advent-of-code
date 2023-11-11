@@ -109,7 +109,3 @@ function fingerprint(g) {
             .map(n => n + g.spells[n].turns)
     ].join(':');
 }
-
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}

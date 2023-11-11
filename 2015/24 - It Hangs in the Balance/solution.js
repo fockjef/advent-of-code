@@ -9,10 +9,7 @@ function silver(numGroups = 3) {
         size <= nums.length;
         size++
     ) {
-        let combos = findNumberCombos(target, nums, size);
-        while (1) {
-            let c = combos.next().value;
-            if (!c) break;
+        for (let c of findNumberCombos(target, nums, size)) {
             let groups = makeEqualGroups(
                 numGroups - 1,
                 nums.filter(n => !c.includes(n))
@@ -55,10 +52,8 @@ function makeEqualGroups(numGroups, nums) {
         return [nums];
     } else {
         let target = nums.sum() / numGroups;
-        combos = findNumberCombos(target, nums);
-        while (1) {
-            let c = combos.next().value;
-            if (!c || c[0] != nums[0]) break;
+        for (let c of (combos = findNumberCombos(target, nums))) {
+            if (c[0] != nums[0]) break;
             let groups = makeEqualGroups(
                 numGroups - 1,
                 nums.filter(n => !c.includes(n))

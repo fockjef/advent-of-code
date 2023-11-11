@@ -9,17 +9,15 @@ function silver() {
         routes[c1][c2] = routes[c2][c1] = +dist;
     });
 
-    let minDist = Infinity,
-        allRoutes = permute(Object.keys(routes));
-    while (1) {
-        let route = allRoutes.next().value;
-        if (!route) return minDist;
+    let minDist = Infinity;
+    for (let route of permute(Object.keys(routes))) {
         let dist = route
             .slice(0, -1)
             .map((c, i) => routes[c][route[i + 1]])
             .sum();
         if (dist < minDist) minDist = dist;
     }
+    return minDist;
 }
 
 function gold() {
@@ -31,15 +29,13 @@ function gold() {
         routes[c1][c2] = routes[c2][c1] = +dist;
     });
 
-    let maxDist = -Infinity,
-        allRoutes = permute(Object.keys(routes));
-    while (1) {
-        let route = allRoutes.next().value;
-        if (!route) return maxDist;
+    let maxDist = -Infinity;
+    for (let route of permute(Object.keys(routes))) {
         let dist = route
             .slice(0, -1)
             .map((c, i) => routes[c][route[i + 1]])
             .sum();
         if (dist > maxDist) maxDist = dist;
     }
+    return maxDist;
 }
