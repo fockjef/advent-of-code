@@ -9,7 +9,7 @@ function silver(numElves = parseInput(Number)[0]) {
         elves.push(elves.splice(0, 2)[0]);
     }
     return elves[0];
-    */
+    //*/
 }
 
 function gold(numElves = parseInput(Number)[0]) {
