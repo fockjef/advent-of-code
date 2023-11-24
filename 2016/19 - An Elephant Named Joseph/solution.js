@@ -18,7 +18,7 @@ function gold(numElves = parseInput(Number)[0]) {
         ? numElves
         : numElves - basis + Math.max(0, numElves - 2 * basis);
 
-    //* helpful to find the pattern - do not use for large numElves
+    /* helpful to find the pattern - do not use for large numElves
     let elves = Array.from(new Array(numElves), (_, i) => i + 1);
     while (elves.length > 1) {
         elves.splice(elves.length >>> 1, 1);
