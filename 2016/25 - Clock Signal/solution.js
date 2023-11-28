@@ -1,6 +1,6 @@
 /* --- Day 25: Clock Signal --- */
 
-function silver(R = {a: 0, b: 0, c: 0, d: 0}) {
+function silver() {
     let instr = parseInput(x => x.split(/[ ,]+/));
     for(let a = 0; a < 1e5; a++){
         let cpu = assembunnyCPU(instr, {a}),
@@ -22,7 +22,7 @@ function silver(R = {a: 0, b: 0, c: 0, d: 0}) {
     }
 }
 
-function *assembunnyCPU(instr, R = {}){
+function* assembunnyCPU(instr, R = {}){
     R = new Proxy(Object.assign({a: 0, b: 0, c: 0, d: 0}, R), {
         get(obj, prop){
             if( Number.isInteger(+prop) ) return +prop;
@@ -52,10 +52,18 @@ function *assembunnyCPU(instr, R = {}){
             case 'out':
                 yield {
                     output: R[instr[i][1]],
+                    currentInstr: i,
                     cycle: cycle,
-                    state: [i, R.a, R.b, R.c, R.d].join(":")
+                    registers: R
                 };
                 break;
         }
+    }
+
+    return {
+        output: undefined,
+        currentInstr: undefined,
+        cycle: cycle,
+        registers: R
     }
 }
