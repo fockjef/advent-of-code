@@ -51,7 +51,7 @@ function* permute(a){
 }
 
 const env = typeof window == "undefined" ? "node" : "browser";
-let [ year, day] = env == "browser"
+let [ year, day, showTimes] = env == "browser"
     ? (location.href.match(/^https:\/\/(?:www\.)?adventofcode\.com\/(\d{4})\/day\/(\d+)\/input$/) || []).slice(1)
     : process.argv.slice(2).map(Number),
     dayDir;
@@ -84,14 +84,16 @@ function runSolutions(expected = ""){
     console.log(`AoC ${year} day ${day}`);
     [ "silver", "gold"].forEach((s, i) => {
         if( s in globalThis ){
-            let answer = globalThis[s]().toString().trim(),
+            let t0 = performance.now(),
+                answer = globalThis[s]().toString().trim(),
                 status = !expected[i]
                     ? " "
                     : `${answer == expected[i] ? green("✓") : red("✗")}`,
                 color = env == "node" || expected[i] == undefined
                     ? ""
                     : `color:${answer == expected[i]? "green" : "red"}`;
-            console.log(`${(s+"  ").slice(0,6)}: ${status} ${answer}`, color, "");
+            t0 = showTimes ? `(${((performance.now() - t0) / 1000).toFixed(3)}s)` : "";
+            console.log(`${(s+"  ").slice(0,6)}: ${status} ${answer} ${t0}`, color, "");
         }
     });
 }
@@ -172,6 +174,7 @@ else{
         }
         else{
             if( typeof globalThis == "undefined" ) global.globalThis = global;
+            globalThis.performance = require("perf_hooks").performance;
             globalThis.fs = require("fs");
             dayDir = fs.readdirSync(year.toString()).find(x => x.startsWith(day))
             if( fs.existsSync(`${year}/${dayDir}/solution.js`) ){

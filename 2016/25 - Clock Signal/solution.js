@@ -2,40 +2,44 @@
 
 function silver() {
     let instr = parseInput(x => x.split(/[ ,]+/));
-    for(let a = 0; a < 1e5; a++){
+    for (let a = 0; a < 1e5; a++) {
         let cpu = assembunnyCPU(instr, {a}),
             cpuStates = new Set(),
             goodOutput = true;
-        for(let i = 0; i < 1e5 && goodOutput; i++){
+        for (let i = 0; i < 1e5 && goodOutput; i++) {
             let res = cpu.next();
-            if( res.done || res.value.output != i % 2 ){
+            if (res.done || res.value.output != i % 2) {
                 goodOutput = false;
-            }
-            else{
-                if( cpuStates.has(res.value.state) ){
+            } else {
+                let state = [
+                    res.value.currentInstr,
+                    ...Object.values(res.value.registers)
+                ].join(':');
+                if (cpuStates.has(state)) {
                     break;
                 }
-                cpuStates.add(res.value.state);
+                cpuStates.add(state);
             }
         }
-        if( goodOutput ) return a;
+        if (goodOutput) return a;
     }
 }
 
-function* assembunnyCPU(instr, R = {}){
+function* assembunnyCPU(instr, R = {}) {
     R = new Proxy(Object.assign({a: 0, b: 0, c: 0, d: 0}, R), {
-        get(obj, prop){
-            if( Number.isInteger(+prop) ) return +prop;
-            if( prop in obj ) return obj[prop];
+        get(obj, prop) {
+            if (Number.isInteger(+prop)) return +prop;
+            if (prop in obj) return obj[prop];
             return 0;
         },
-        set(obj, prop, value){
-            if( Number.isInteger(+prop) ) return +prop;
-            return obj[prop] = value;
+        set(obj, prop, value) {
+            if (Number.isInteger(+prop)) return +prop;
+            return (obj[prop] = value);
         }
     });
 
-    for (let i = 0, cycle = 0; i < instr.length; i++, cycle++) {
+    let cycle = 0;
+    for (let i = 0; i < instr.length; i++, cycle++) {
         switch (instr[i][0]) {
             case 'inc':
                 R[instr[i][1]]++;
@@ -47,7 +51,22 @@ function* assembunnyCPU(instr, R = {}){
                 R[instr[i][2]] = R[instr[i][1]];
                 break;
             case 'jnz':
-                if( R[instr[i][1]] != 0 ) i += R[instr[i][2]] - 1;
+                if (R[instr[i][1]] != 0) i += R[instr[i][2]] - 1;
+                break;
+            case 'tgl':
+                let target = i + R[instr[i][1]];
+                if (target >= 0 && target < instr.length) {
+                    switch (instr[target].length) {
+                        case 2:
+                            instr[target][0] =
+                                instr[target][0] == 'inc' ? 'dec' : 'inc';
+                            break;
+                        case 3:
+                            instr[target][0] =
+                                instr[target][0] == 'jnz' ? 'cpy' : 'jnz';
+                            break;
+                    }
+                }
                 break;
             case 'out':
                 yield {
@@ -65,5 +84,5 @@ function* assembunnyCPU(instr, R = {}){
         currentInstr: undefined,
         cycle: cycle,
         registers: R
-    }
+    };
 }
