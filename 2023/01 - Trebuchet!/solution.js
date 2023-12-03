@@ -7,16 +7,19 @@ function silver() {
 }
 
 function gold() {
-    let nums = 'one|two|three|four|five|six|seven|eight|nine',
-        numRE = new RegExp(nums),
-        lastNumRE = new RegExp(`^(.*)(${nums})`);
-    nums = Object.fromEntries(nums.split('|').map((n, i) => [n, i + 1]));
-    return parseInput(x =>
-        x
-            .replace(numRE, n => nums[n] + n.slice(1))
-            .replace(lastNumRE, (_, pre, n) => pre + nums[n])
-            .match(/\d/g)
-    )
-        .map(d => d[0] + d[d.length - 1])
-        .sum();
+    let nums = '\\d|one|two|three|four|five|six|seven|eight|nine',
+        firstNumRE = new RegExp(nums),
+        lastNumRE = new RegExp(`^.*(${nums})`);
+    nums = Object.fromEntries(
+        nums
+            .split('|')
+            .map((n, i) => [
+                [n, i],
+                [i, i]
+            ])
+            .flat()
+    );
+    return parseInput(
+        x => nums[x.match(firstNumRE)[0]] * 10 + nums[x.match(lastNumRE)[1]]
+    ).sum();
 }
