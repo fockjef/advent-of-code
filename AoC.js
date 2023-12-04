@@ -29,6 +29,15 @@ Array.prototype.numericSortAsc = function(){return this.sort(numericSortAsc)};
 Array.prototype.numericSortDesc = function(){return this.sort(numericSortDesc)};
 Array.prototype.max = function(){try{return Math.max(...this)}catch(e){return this.numericSortDesc()[0]}};
 Array.prototype.min = function(){try{return Math.min(...this)}catch(e){return this.numericSortAsc ()[0]}};
+RegExp.prototype.findAll = function(str) {
+    let self = new RegExp(this, 'g'),
+        matches = [];
+    while (1) {
+        let m = self.exec(str);
+        if (m == null) return matches;
+        matches.push(m);
+    }
+};
 function* permute(a){
     yield a;
     let i = 1,
