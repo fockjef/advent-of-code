@@ -1,0 +1,2 @@
+#!/usr/bin/perl
+@c=map{[split""]}@l=<>;push@c,[];for(@l){while(/\G.*?(\d+)/g){for$r($i-1,$i,$i+1){for(pos()-1-length$1..pos){push@{$g{"$r:$_"}},$1 if$c[$r][$_]eq"*"}}}$i++}for(%g){$\+=$_->[0]*$_->[1]if@$_==2}print
