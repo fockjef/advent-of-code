@@ -172,6 +172,7 @@ else{
     if( year && day ){
         if( env == "browser" ){
             let title = (await fetch(location.href.slice(0, -6)).then(res => res.text())).match(/--- Day \d+: (.*?) ---/)[1];
+            title = title.replace(/[\\\/:*?"<>|]/g, "");
             dayDir = `${day} - ${title}`;
             let script = document.head.appendChild( document.createElement( "script" ) );
             script.onload = () => {
