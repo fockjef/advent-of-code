@@ -1,31 +1,33 @@
 /* --- Day 5: If You Give A Seed A Fertilizer --- */
 
 function silver() {
-    let [seeds, ...maps] = parseInput(/\n\n/);
-    seeds = seeds.match(/\d+/g).map(value => [[+value, +value]]);
-    maps = maps.map(m => new RangeMap(m));
-    return seedsToLocations(seeds, maps).flat().min();
+    let data = parseInput(/\n\n/);
+    seeds = data[0].match(/\d+/g).map(value => [[+value, +value]]);
+    maps = data.slice(1).map(m => new RangeMap(m));
+    return seeds
+        .map(seed => seedToLocations(seed, maps))
+        .flat(2)
+        .min();
 }
 
 function gold() {
-    let [seeds, ...maps] = parseInput(/\n\n/);
-    seeds = seeds
+    let data = parseInput(/\n\n/);
+    seeds = data[0]
         .match(/\d+ +\d+/g)
         .map(x => x.split(/ +/).map(Number))
         .map(x => [[x[0], x[0] + x[1] - 1]]);
-    maps = maps.map(m => new RangeMap(m));
-    return seedsToLocations(seeds, maps).flat().min();
+    maps = data.slice(1).map(m => new RangeMap(m));
+    return seeds
+        .map(seed => seedToLocations(seed, maps))
+        .flat(2)
+        .min();
 }
 
-function seedsToLocations(seeds, maps) {
-    return seeds
-        .map(seed =>
-            maps.reduce(
-                (ranges, map) => ranges.map(r => map.mapRange(r)).flat(),
-                seed
-            )
-        )
-        .flat();
+function seedToLocations(seed, maps) {
+    return maps.reduce(
+        (ranges, map) => ranges.map(r => map.mapRange(r)).flat(),
+        seed
+    );
 }
 
 function RangeMap(description) {
