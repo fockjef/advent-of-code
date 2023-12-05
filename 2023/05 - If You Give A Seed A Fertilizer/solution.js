@@ -1,9 +1,9 @@
 /* --- Day 5: If You Give A Seed A Fertilizer --- */
 
 function silver() {
-    let data = parseInput(/\n\n/);
-    seeds = data[0].match(/\d+/g).map(value => [[+value, +value]]);
-    maps = data.slice(1).map(m => new RangeMap(m));
+    let data = parseInput(/\n\n/),
+        seeds = data[0].match(/\d+/g).map(value => [[+value, +value]]),
+        maps = data.slice(1).map(m => new RangeMap(m));
     return seeds
         .map(seed => seedToLocations(seed, maps))
         .flat(2)
@@ -11,12 +11,12 @@ function silver() {
 }
 
 function gold() {
-    let data = parseInput(/\n\n/);
-    seeds = data[0]
-        .match(/\d+ +\d+/g)
-        .map(x => x.split(/ +/).map(Number))
-        .map(x => [[x[0], x[0] + x[1] - 1]]);
-    maps = data.slice(1).map(m => new RangeMap(m));
+    let data = parseInput(/\n\n/),
+        seeds = data[0]
+            .match(/\d+ +\d+/g)
+            .map(x => x.split(/ +/).map(Number))
+            .map(x => [[x[0], x[0] + x[1] - 1]]),
+        maps = data.slice(1).map(m => new RangeMap(m));
     return seeds
         .map(seed => seedToLocations(seed, maps))
         .flat(2)
