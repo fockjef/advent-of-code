@@ -70,12 +70,3 @@ function findAdjacentNumbers(lineNum, startPos, endPos, schematic) {
             .match(/\d+/g) || []
     );
 }
-
-RegExp.prototype.findAll = function* (str) {
-    let self = new RegExp(this, 'g');
-    while (1) {
-        let match = self.exec(str);
-        if (match == null) break;
-        yield match;
-    }
-};
