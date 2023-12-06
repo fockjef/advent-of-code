@@ -4,8 +4,8 @@ function silver() {
     let [T, D] = parseInput(x => x.match(/\d+/g).map(Number));
     return T.map(
         (t, i) =>
-            Math.floor((t + Math.sqrt(t * t - 4 * (D[i] + 1))) / 2) -
-            Math.ceil((t - Math.sqrt(t * t - 4 * (D[i] + 1))) / 2) +
+            Math.floor((t + Math.sqrt(t * t - 4 * D[i] - 1)) / 2) -
+            Math.ceil((t - Math.sqrt(t * t - 4 * D[i] - 1)) / 2) +
             1
     ).prod();
 }
@@ -16,8 +16,8 @@ function gold() {
     );
     return T.map(
         (t, i) =>
-            Math.floor((t + Math.sqrt(t * t - 4 * (D[i] + 1))) / 2) -
-            Math.ceil((t - Math.sqrt(t * t - 4 * (D[i] + 1))) / 2) +
+            Math.floor((t + Math.sqrt(t * t - 4 * D[i] - 1)) / 2) -
+            Math.ceil((t - Math.sqrt(t * t - 4 * D[i] - 1)) / 2) +
             1
     ).prod();
 }
