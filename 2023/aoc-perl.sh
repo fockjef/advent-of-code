@@ -17,3 +17,5 @@ day7a () { perl -ape '$C{$_}++for split"",$F[0];%C=push@H,join"",(sort{$b-$a}val
 day7b () { perl -ape '$C{$_}++for split"",$F[0];$n=delete$C{J};@X=sort{$b-$a}values%C;$X[0]+=$n;%C=push@H,join"",@X,$F[0]=~y/JTAK/0HUT/r,"!"x$F[1]}{$\+=++$i*y/!/!/for sort@H' "$*"; }
 day8a () {  "$*"; }
 day8b () {  "$*"; }
+day9a () { perl -ape 'sub v{(grep{$_!=0}@_)?$_[$#_]+v(map{$_[$_]-$_[$_-1]}1..$#_):0}$\+=v(@F)}{' "$*"; }
+day9b () { perl -ape 'sub v{(grep{$_!=0}@_)?$_[0]-v(map{$_[$_]-$_[$_-1]}1..$#_):0}$\+=v(@F)}{' "$*"; }
