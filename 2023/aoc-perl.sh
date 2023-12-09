@@ -11,11 +11,11 @@ day4a () { perl -pe '$\+=1<<s/( \d+)(?= .+\1\s)//g-1}{' "$*"; }
 day4b () { perl -pe '$m[$.+$_]+=1+$m[$.]for(1..s/( \d+)(?= .+\1\s)//g);$\+=$m[$.]+1}{' "$*"; }
 day5a () { perl -0l61pe '@x=/\d+/g;$\*=1+(($_/=2)+($y=sqrt($_*$_-$x[++$i+$#x/2]-1))|0)-$_+$y|0for@x[0..$#x/2]}{' "$*"; }
 day5b () { perl -0pe '($t,$d)=s/ //gr=~/\d+/g;$t/=2;$\=1+($t+($x=sqrt($t*$t-$d-1))|0)-$t+$x|0}{' "$*"; }
-day6a () {  "$*"; }
-day6b () {  "$*"; }
+day6a () { head "$*"; }
+day6b () { head "$*"; }
 day7a () { perl -ape '$C{$_}++for split"",$F[0];%C=push@H,join"",(sort{$b-$a}values%C),$F[0]=~y/KAT/RUB/r,"!"x$F[1]}{$\+=++$i*y/!/!/for sort@H' "$*"; }
 day7b () { perl -ape '$C{$_}++for split"",$F[0];$n=delete$C{J};@X=sort{$b-$a}values%C;$X[0]+=$n;%C=push@H,join"",@X,$F[0]=~y/JTAK/0HUT/r,"!"x$F[1]}{$\+=++$i*y/!/!/for sort@H' "$*"; }
-day8a () {  "$*"; }
-day8b () {  "$*"; }
+day8a () { head "$*"; }
+day8b () { head "$*"; }
 day9a () { perl -ape 'sub v{(grep{$_!=0}@_)?$_[$#_]+v(map{$_[$_]-$_[$_-1]}1..$#_):0}$\+=v(@F)}{' "$*"; }
 day9b () { perl -ape 'sub v{(grep{$_!=0}@_)?$_[0]-v(map{$_[$_]-$_[$_-1]}1..$#_):0}$\+=v(@F)}{' "$*"; }
