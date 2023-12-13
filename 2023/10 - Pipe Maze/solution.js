@@ -6,7 +6,7 @@ function silver() {
 		c0 = grid[r0].indexOf('S');
 	return calcDist({r: r0, c: c0}, grid)
 		.flat()
-		.filter(d => d != Infinity)
+		.filter(isFinite)
 		.max();
 }
 
@@ -14,7 +14,7 @@ function gold() {
 	let grid = parseInput(x => x.split('')),
 		r0 = grid.findIndex(row => row.includes('S')),
 		c0 = grid[r0].indexOf('S'),
-		dist = (window.grid = calcDist({r: r0, c: c0}, grid)),
+		dist = calcDist({r: r0, c: c0}, grid),
 		numTiles = 0,
 		startMates = NSEW.filter(([rInc, cInc, dir]) => {
 			let rr = r0 + rInc,
