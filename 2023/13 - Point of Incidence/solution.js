@@ -32,13 +32,3 @@ function numSmudges(a, b) {
     }
     return numSmudges;
 }
-
-Array.prototype.transpose = function () {
-    let T = Array.from(new Array(this[0].length), () => new Array(this.length));
-    for (let r = 0; r < this.length; r++) {
-        for (let c = 0; c < T.length; c++) {
-            T[c][r] = this[r][c];
-        }
-    }
-    return T;
-};
