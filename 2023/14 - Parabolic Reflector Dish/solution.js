@@ -12,11 +12,11 @@ function gold() {
         grid = spin(grid);
         let key = grid.map(row => row.join('')).join('');
         if (key in cache) {
-            let i0 = cache[key].i;
+            let i0 = cache[key].i0;
             targetI0 = i0 + ((1e9 - i0) % (i - i0));
             return Object.values(cache).find(({i0}) => i0 == targetI0).load;
         }
-        cache[key] = {i: i, load: calculateLoad(grid)};
+        cache[key] = {i0: i, load: calculateLoad(grid)};
     }
     return calculateLoad(grid);
 }
