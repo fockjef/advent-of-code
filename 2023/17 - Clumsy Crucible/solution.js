@@ -93,31 +93,3 @@ function findPath(
         .flat()
         .sort((a, b) => a.dist - b.dist)[0];
 }
-
-function calcDist(grid, start) {
-    let dist = grid.map(row => row.map(() => Infinity)),
-        queue = [start],
-        inQueue = new Set(start.x + ':' + start.y);
-    dist[start.y][start.x] = 0;
-    while (queue.length) {
-        let {x, y} = queue.sort((a, b) => a.dist - b.dist).shift();
-        d = dist[y][x];
-        dist[y][x] = d;
-        UDLR.forEach(([xInc, yInc]) => {
-            let xx = x + xInc,
-                yy = y + yInc;
-            if (
-                yy in grid &&
-                xx in grid[yy] &&
-                d + grid[yy][xx] < dist[yy][xx]
-            ) {
-                dist[yy][xx] = d + grid[yy][xx];
-                if (!inQueue.has(xx + ':' + yy)) {
-                    queue.push({x: xx, y: yy});
-                    inQueue.add(xx + ':' + yy);
-                }
-            }
-        });
-    }
-    return dist;
-}
