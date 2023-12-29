@@ -22,13 +22,7 @@ const UDLR = [
     [1, 0, 'R', 'L']
 ];
 
-function findPath(
-    grid,
-    start,
-    end,
-    minRun = 1,
-    maxRun = Number.MAX_SAFE_INTEGER
-) {
+function findPath(grid, start, end, minRun = 1, maxRun = Infinity) {
     let nodes = grid.map((row, y) =>
             row.map(
                 (node, x) =>
