@@ -29,6 +29,7 @@ Array.prototype.numericSortAsc = function(){return this.sort(numericSortAsc)};
 Array.prototype.numericSortDesc = function(){return this.sort(numericSortDesc)};
 Array.prototype.max = function(){try{return Math.max(...this)}catch(e){return this.numericSortDesc()[0]}};
 Array.prototype.min = function(){try{return Math.min(...this)}catch(e){return this.numericSortAsc ()[0]}};
+Array.prototype.uniq = function(){return [...new Set(this)]};
 Array.prototype.toSpliced = function(start, deleteCount, ...items){let S = this.slice();S.splice(start, deleteCount, ...items);return S};
 Array.prototype.transpose = function(){
     let T = Array.from(new Array(this[0].length), () => new Array(this.length));
