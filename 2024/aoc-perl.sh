@@ -25,3 +25,15 @@ perl -e 'print "grid problems are dumb"' input.txt
 # Day 7
 perl -pe 'push@X,[/\d+/g]}{sub C{my($g,$a,$u,@v)=@_;$a>$g?0:$u?C($g,$a*$u,@v)||C($g,$a+$u,@v):$a==$g}$\+=@$_[0]*C@$_ for@X' input.txt
 perl -pe 'push@X,[/\d+/g]}{sub C{my($g,$a,$u,@v)=@_;$a>$g?0:$u?C($g,$a*$u,@v)||C($g,$a+$u,@v)||C($g,$a.$u,@v):$a==$g}$\+=@$_[0]*C@$_ for@X' input.txt
+
+# Day 8
+perl -pe '$i=1;push@{$X{$_}},[$.,$i++]for/./g}{$X{"."}=();for(values%X){while(($a,$b)=@{pop@$_}){for(@$_){($c,$d)=@$_;$e=2*$a-$c;$f=2*$b-$d;$g=2*$c-$a;$Y{"$e,$f"}=$Y{"$g,$h"}=$h=2*$d-$b}}}$_=grep{!grep{$_<1||$.<$_}split/,/}keys%Y' input.txt
+perl -pe '$i=1;push@{$X{$_}},[$.,$i++]for/./g}{$X{"."}=();for(values%X){while(($a,$b)=@{pop@$_}){for(@$_){for$k(1..$.){($c,$d)=@$_;$e=$a-$k*($a-$c);$f=$b-$k*($b-$d);$g=$c-$k*($c-$a);$Y{"$e,$f"}=$Y{"$g,$h"}=$h=$d-$k*($d-$b)}}}}$_=grep{!grep{$_<1||$.<$_}split/,/}keys%Y' input.txt
+
+# Day 9
+perl -pe '@X=/./g;while(($s,$e)=splice@X,0,2){$\+=$i++*$s*($p+$s/2-.5);$p+=$s;while($e){$s=$e<$X[-1]?$e:$X[-1];$\+=($i+(@X>>1))*$s*($p+$s/2-.5);$p+=$s;$e-=$s;$#X-=2if!($X[-1]-=$s)}}}{' input.txt
+perl -e 'nope'
+
+# Day 10
+perl -pe 'sub c{my($x,$n,$k)=@_;!$x--||$C{$k="$n:$x"}||($C{$k}=!$n?c($x,1):($_=length$n)%2?c($x,2024*$n):c($x,substr$n,0,$_/2,"")+c($x,0+$n))}$\+=c(25,$_)for/\d+/g}{' input.txt
+perl -pe 'sub c{my($x,$n,$k)=@_;!$x--||$C{$k="$n:$x"}||($C{$k}=!$n?c($x,1):($_=length$n)%2?c($x,2024*$n):c($x,substr$n,0,$_/2,"")+c($x,0+$n))}$\+=c(75,$_)for/\d+/g}{' input.txt
