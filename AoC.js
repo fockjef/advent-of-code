@@ -1,6 +1,6 @@
 /*
     Run solution in dev console:
-    document.head.appendChild( document.createElement( "script" ) ).src = "https://fockjef.net/advent-of-code/AoC.js"
+    document.head.appendChild( document.createElement("script")).src = "https://fockjef.net/advent-of-code/AoC.js"
 
     Run solution on command line:
     node AoC.js {year} {day}
