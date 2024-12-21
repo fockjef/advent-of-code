@@ -49,6 +49,39 @@ RegExp.prototype.findAll = function(str) {
         matches.push(m);
     }
 };
+function extended_gcd(a, b) {
+    let r = [a, b],
+        s = [1, 0],
+        t = [0, 1],
+        q;
+    while (r[1] != 0) {
+        q = (r[0] / r[1]) >>> 0;
+        r = [r[1], r[0] - q * r[1]];
+        s = [s[1], s[0] - q * s[1]];
+        t = [t[1], t[0] - q * t[1]];
+    }
+    return {
+        gcd: r[0],
+        bezout: {
+            s: s[0],
+            t: t[0]
+        }
+    };
+}
+function crt(equations){
+    equations = equations.slice();
+    while(equations.length > 1){
+        let [{a: a1, n: n1}, {a: a2, n: n2}] = equations.splice(0, 2);
+        let {gcd, bezout: {s, t}} = extended_gcd(n1, n2),
+            n = n1 * n2;
+        if(gcd != 1) throw new Error(`${n1} and ${n2} are not coprime`);
+        equations.unshift({
+            a: ((a1 * n2 * t + a2 * n1 * s) % n + n) % n,
+            n: n
+        });
+    }
+    return equations[0];
+}
 function* permute(a){
     yield a;
     let i = 1,
